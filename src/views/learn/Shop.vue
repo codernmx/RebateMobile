@@ -126,6 +126,7 @@ export default {
           this.identifyDialogInput = ''
           console.log(res.data.goodsId);
           //请求转连接 绑定 渠道ID
+          //存在写死渠道IDbug
           api.getPrivilegeLink(res.data.goodsId,2736562433)
             .then((res) => {
               this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
