@@ -40,7 +40,7 @@
 												没有账号，去注册
 								</p>
                 <p class="cen mt30">
-                  <a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">粤ICP备2021041292号</a>
+                  <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank" rel="noopener noreferrer">粤ICP备2021041292号-1</a>
                 </p>
 				</div>
 </template>
