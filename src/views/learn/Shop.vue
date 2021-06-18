@@ -23,8 +23,37 @@
     <div class="nav">
       <div class="el-icon-arrow-left fz-xl"></div>
       <div class="diary">购物</div>
-      <div class="el-icon-refresh fz-xl"></div>
+      <div
+        class="fz-xl"
+        @click="identifyDialog = true"
+      >识别</div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="identifyDialog"
+      width="70%"
+      center
+    >
+      <div>
+        <el-input
+          type="textarea"
+          :rows="5"
+          placeholder="请输入内容"
+          v-model="identifyDialogInput"
+        >
+        </el-input>
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="identifyDialog = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="identifyDialogSub"
+        >确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="bigBox">
       <div
         v-for="item in list"
@@ -70,6 +99,8 @@ export default {
   components: { ClipBoard },
   data () {
     return {
+      identifyDialogInput: '',
+      identifyDialog: false,
       tklDialog: {
         dialog: false,
         dialogValue: ''
@@ -84,6 +115,32 @@ export default {
     init () {
       //读取localStorage
       this.getShoList()
+    },
+    identifyDialogSub () {
+
+      this.identifyDialog = false
+      //请求解析接口
+      api.tklParsing(this.identifyDialogInput)
+        .then((res) => {
+          //清空输入框
+          this.identifyDialogInput = ''
+          console.log(res.data.goodsId);
+          //请求转连接 绑定 渠道ID
+          api.getPrivilegeLink(res.data.goodsId,2736562433)
+            .then((res) => {
+              this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+              this.tklDialog.dialog = true
+              console.log(res.data.tpwd);
+            }).catch((err) => {
+              console.log(err);
+            });
+
+
+
+
+        }).catch((err) => {
+          console.log(err);
+        });
     },
     tkl (id) {
       api.tkl(id)

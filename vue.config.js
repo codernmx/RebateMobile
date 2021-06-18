@@ -31,15 +31,15 @@ module.exports = {
         // }
 
       },
-      // '^/tbk': {
-      //   target: 'http://82.156.117.112:3031',
-      //   ws: true,
-      //   changOrigin: true,
-      //   // pathRewrite: {
-      //   //         '^/api': '',
-      //   // }
+      '^/tbk': {
+        target: 'http://82.156.117.112:9191/',
+        ws: true,
+        changOrigin: true,
+        // pathRewrite: {
+        //         '^/api': '',
+        // }
 
-      // }
+      }
     },
 
 

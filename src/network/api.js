@@ -92,6 +92,10 @@ export const diary_search = function (search) {
 };
 
 
+
+
+
+
 export const shopList = function () {
 	return axios.get('/DataApi/index?AppKey=365egvspsx&type=6').then(res => {
 		console.log(res);
@@ -102,6 +106,24 @@ export const shopList = function () {
 };
 export const tkl = function (id) {
 	return axios.get(`/DataApi/GetItemTklLink?appkey=365egvspsx&id=${id}`).then(res => {
+		console.log(res);
+		return res.data
+	}).catch(err => {
+		console.log("api登录错误", err)
+	})
+};
+
+export const tklParsing = function (content) {
+	return axios.get(`tbk/parsing?content=${content}`).then(res => {
+		console.log(res);
+		return res.data
+	}).catch(err => {
+		console.log("api登录错误", err)
+	})
+};
+
+export const getPrivilegeLink = function (id,channelId) {
+	return axios.get(`/tbk/get/privilege/link?id=${id}&channelId=${channelId}`).then(res => {
 		console.log(res);
 		return res.data
 	}).catch(err => {
