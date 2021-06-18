@@ -124,6 +124,7 @@ export default {
         .then((res) => {
           //清空输入框
           this.identifyDialogInput = ''
+          //缺少没有解析成功提示
           console.log(res.data.goodsId);
           //请求转连接 绑定 渠道ID
           //存在写死渠道IDbug
