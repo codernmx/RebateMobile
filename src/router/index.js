@@ -7,10 +7,12 @@ const Write_diary = () => import('../views/home/Write_diary')
 const About = () => import('../views/about/About')
 const Learn = () => import('../views/learn/Learn')
 const Shop = () => import('../views/learn/Shop')
+const GoodsDeails = () => import('../views/learn/GoodsDeails')
 const Message = () => import('../views/message/Message')
 const Login = () => import('../views/login/Login')
 const Register = () => import('../views/login/Register')
 const Profile = () => import('../views/profile/Profile')
+const Order = () => import('../views/profile/Order')
 const Photo_list = () => import('../views/profile/Photo_list')
 const Setting = () => import('../views/profile/Setting')
 const Tools = () => import('../views/profile/Tools')
@@ -67,6 +69,11 @@ const routes = [
                 component: Shop
         },
         {
+                path: '/goodsDetails',
+                name: 'GoodsDeails',
+                component: GoodsDeails
+        },
+        {
                 path: '/message',
                 name: 'Message',
                 component: Message
@@ -91,6 +98,11 @@ const routes = [
                 path: '/profile',
                 name: 'Profile',
                 component: Profile
+        },
+        {
+                path: '/order',
+                name: 'Order',
+                component: Order
         },
         {
                 path: '/setting',

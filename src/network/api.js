@@ -131,6 +131,17 @@ export const getPrivilegeLink = function (id,channelId) {
 		console.log("api登录错误", err)
 	})
 };
+export const getGoodsDetails = function (id) {
+	return axios.get(`/tbk/get/goods/details?id=${id}`).then(res => {
+		console.log(res);
+		return res.data
+	}).catch(err => {
+		console.log("api登录错误", err)
+	})
+};
+
+
+
 // export const tkl = function (url) {
 // 	return axios.get('/tbk/create?url='+url).then(res => {
 // 		console.log(res);
@@ -139,3 +150,35 @@ export const getPrivilegeLink = function (id,channelId) {
 // 		console.log("api登录错误", err)
 // 	})
 // };
+
+
+/**
+ * get方法，对应get请求
+ */
+ export const get = function get (url, params) {
+  return new Promise((resolve, reject) => {
+    axios.get(url, {
+      params: params
+    }).then(res => {
+      resolve(res.data)
+      // console.log(res)
+    }).catch(err => {
+      reject(err.data)
+      // console.log(err)
+    })
+  })
+}
+/**
+ * post方法，对应post请求
+ */
+export const post = function post (url, params) {
+  return new Promise((resolve, reject) => {
+    axios.post(url, params)
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(err => {
+        reject(err.data)
+      })
+  })
+}

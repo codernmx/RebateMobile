@@ -57,12 +57,38 @@
         >解析</el-button>
       </span>
     </el-dialog>
+
+
+    <!-- 解析后的弹窗 -->
+    <el-dialog
+      title="检测到含有优惠的商品"
+      :visible.sync="afterIdentifyDialog"
+      width="70%"
+      center
+    >
+      <div>
+        55
+      </div>
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="afterIdentifyDialog = false">查看详情</el-button>
+        <el-button
+          type="primary"
+          @click="afterIdentifyDialog = false"
+        >立即购买</el-button>
+      </span>
+    </el-dialog>
+
+
+
     <div class="bigBox">
       <div
         v-for="item in list"
         :key="item.ID"
         class="itemBox"
-        @click="tkl(item.GoodsId)"
+        @click="toDetails(item.GoodsId)"
       >
         <img
           :src="item.ImgUrl"
@@ -74,7 +100,7 @@
         <div class="itemRight">
           <div>{{item.GoodsName}}</div>
           <div class="price"> <span class="lower">券：{{item.ActMoney}}元</span> 券后：￥<span>{{item.LastPrice}}</span></div>
-          <div class="buyButton">近两小时已抢：{{item.SaleCount}} <div style="color:white">立即抢</div>
+          <div class="buyButton">近两小时已抢：{{item.SaleCount}} <div style="color:white" @click="tkl(item.GoodsId)">立即抢</div>
           </div>
         </div>
       </div>
@@ -104,6 +130,7 @@ export default {
     return {
       identifyDialogInput: '',
       identifyDialog: false,
+      afterIdentifyDialog: false,
       tklDialog: {
         dialog: false,
         dialogValue: ''
@@ -117,6 +144,11 @@ export default {
   methods: {
     init () {
       this.getShoList()
+    },
+    toDetails(id){
+      this.$router.push({ path: "/GoodsDeails", name: "GoodsDeails", query:{
+        goodsId:id
+      }});
     },
     identifyDialogSub () {
       this.identifyDialog = false
@@ -184,7 +216,7 @@ export default {
     top: 50px;
     right: 20px;
     float: right;
-    background: #FDD48A;
+    background: #fdd48a;
     border-radius: 5px;
   }
 }
@@ -210,7 +242,7 @@ export default {
       .price {
         color: #fe355d;
         .lower {
-          padding-right: 20px;
+          padding-right: 10px;
           background: #ff6a69;
           color: #ffffff;
           padding-left: 10px;

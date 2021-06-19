@@ -23,7 +23,7 @@ module.exports = {
 
       },
       '^/DataApi': {
-        target: 'http://api.xuandan.com',
+        target: 'http://api.xuandan.com/',
         ws: true,
         changOrigin: true,
         // pathRewrite: {
