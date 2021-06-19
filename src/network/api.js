@@ -113,6 +113,7 @@ export const tkl = function (id) {
 	})
 };
 
+//解析淘口令
 export const tklParsing = function (content) {
 	return axios.get(`tbk/parsing?content=${content}`).then(res => {
 		console.log(res);
@@ -121,7 +122,7 @@ export const tklParsing = function (content) {
 		console.log("api登录错误", err)
 	})
 };
-
+//根据渠道id转连接
 export const getPrivilegeLink = function (id,channelId) {
 	return axios.get(`/tbk/get/privilege/link?id=${id}&channelId=${channelId}`).then(res => {
 		console.log(res);

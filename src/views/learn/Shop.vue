@@ -23,13 +23,16 @@
     <div class="nav">
       <div class="el-icon-arrow-left fz-xl"></div>
       <div class="diary">购物</div>
-      <div
-        class="fz-xl"
-        @click="identifyDialog = true"
-      >识别</div>
+      <div class="fz-xl"></div>
     </div>
+
+    <div
+      class="identify"
+      @click="identifyDialog = true"
+    >点击识别</div>
+
     <el-dialog
-      title="提示"
+      title="粘贴需要解析的淘口令"
       :visible.sync="identifyDialog"
       width="70%"
       center
@@ -38,7 +41,7 @@
         <el-input
           type="textarea"
           :rows="5"
-          placeholder="请输入内容"
+          placeholder="粘贴需要解析的淘口令"
           v-model="identifyDialogInput"
         >
         </el-input>
@@ -47,11 +50,11 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="identifyDialog = false">取 消</el-button>
+        <!-- <el-button @click="identifyDialog = false">取 消</el-button> -->
         <el-button
           type="primary"
           @click="identifyDialogSub"
-        >确 定</el-button>
+        >解析</el-button>
       </span>
     </el-dialog>
     <div class="bigBox">
@@ -113,35 +116,33 @@ export default {
   },
   methods: {
     init () {
-      //读取localStorage
       this.getShoList()
     },
     identifyDialogSub () {
-
       this.identifyDialog = false
       //请求解析接口
       api.tklParsing(this.identifyDialogInput)
         .then((res) => {
-          //清空输入框
-          this.identifyDialogInput = ''
-          //缺少没有解析成功提示
-          console.log(res.data.goodsId);
-          //请求转连接 绑定 渠道ID
-          //存在写死渠道IDbug
-          api.getPrivilegeLink(res.data.goodsId,2736562433)
-            .then((res) => {
-              this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
-              this.tklDialog.dialog = true
-              console.log(res.data.tpwd);
-            }).catch((err) => {
-              console.log(err);
-            });
-
-
-
-
+          //没有解析成功提示
+          if (res.code == '20003') {
+            this.$message.error(res.msg);
+            this.identifyDialogInput = ''
+          } else if (res.code == '0') {
+            //清空输入框
+            this.identifyDialogInput = ''
+            this.$message.success('解析成功请等待弹窗');
+            //请求转连接 绑定 渠道ID //存在写死渠道IDbug
+            api.getPrivilegeLink(res.data.goodsId, 2736562433)
+              .then((res) => {
+                this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+                this.tklDialog.dialog = true
+                console.log(res.data.tpwd);
+              }).catch((err) => {
+                console.log(err);
+              });
+          }
         }).catch((err) => {
-          console.log(err);
+          this.$message.error(err);
         });
     },
     tkl (id) {
@@ -149,19 +150,17 @@ export default {
         .then((res) => {
           this.tklDialog.dialogValue = '0(' + res.tkl + ')/'
           this.tklDialog.dialog = true
-          console.log(res.tkl);
         }).catch((err) => {
-          console.log(err);
+          this.$message.error(err);
         });
     },
     getShoList () {
       api.shopList()
         .then((res) => {
           this.list = res.data
-          console.log(res);
         })
         .catch((err) => {
-          console.log(err);
+          this.$message.error(err);
         });
     },
   },
@@ -169,19 +168,33 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.bg {
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  z-index: -1;
-}
-.line {
-  padding-bottom: 51px;
+#shop {
+  .bg {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: -1;
+  }
+  .identify {
+    width: 50px;
+    padding: 8px;
+    height: 50px;
+    color: #898070;
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    float: right;
+    background: #FDD48A;
+    border-radius: 5px;
+  }
 }
 
 .bigBox {
   padding-left: 15px;
   padding-right: 15px;
+  .line {
+    padding-bottom: 51px;
+  }
   .itemBox {
     display: flex;
     margin-top: 15px;
