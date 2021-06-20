@@ -24,105 +24,108 @@ Vue.use(VueRouter)
 
 // 2.创建router
 const routes = [
-        {
-                path: '',
-                redirect: '/home'
-        },
-        {
-                path: '/home',
-                name: 'Home',
-                component: Home
-        },
-        {
-                path: '/nav',
-                name: 'Nav',
-                component: Nav
-        },
-        {
-                path: '/navDetails',
-                name: 'NavDetails',
-                component: NavDetails
-        },
-        {
-                path: '/details',
-                name: 'Details',
-                component: Details
-        },
-        {
-                path: '/write_diary',
-                name: 'Write_diary',
-                component: Write_diary
-        },
-        {
-                path: '/about',
-                name: 'About',
-                component: About
-        },
-        {
-                path: '/learn',
-                name: 'Learn',
-                component: Learn
-        },
-        {
-                path: '/shop',
-                name: 'Shop',
-                component: Shop
-        },
-        {
-                path: '/goodsDetails',
-                name: 'GoodsDeails',
-                component: GoodsDeails
-        },
-        {
-                path: '/message',
-                name: 'Message',
-                component: Message
-        },
-        {
-                path: '/login',
-                name: 'Login',
-                component: Login,
-                meta: {
-                        keepAlive: true
-                }
-        },
-        {
-                path: '/register',
-                name: 'Register',
-                component: Register,
-                meta: {
-                        keepAlive: true
-                }
-        },
-        {
-                path: '/profile',
-                name: 'Profile',
-                component: Profile
-        },
-        {
-                path: '/order',
-                name: 'Order',
-                component: Order
-        },
-        {
-                path: '/setting',
-                name: 'Setting',
-                component: Setting
-        },
-        {
-                path: '/photo_list',
-                name: 'Photo_list',
-                component: Photo_list
-        },
-        {
-                path: '/tools',
-                name: 'Tools',
-                component: Tools
-        }
+  {
+    path: '',
+    redirect: '/home'
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/nav',
+    name: 'Nav',
+    component: Nav
+  },
+  {
+    path: '/navDetails',
+    name: 'NavDetails',
+    component: NavDetails
+  },
+  {
+    path: '/details',
+    name: 'Details',
+    component: Details
+  },
+  {
+    path: '/write_diary',
+    name: 'Write_diary',
+    component: Write_diary
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+  {
+    path: '/learn',
+    name: 'Learn',
+    component: Learn
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: Shop,
+    meta: {
+      noRefresh: true
+    }
+  },
+  {
+    path: '/goodsDetails',
+    name: 'GoodsDeails',
+    component: GoodsDeails
+  },
+  {
+    path: '/message',
+    name: 'Message',
+    component: Message
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
+  },
+  {
+    path: '/order',
+    name: 'Order',
+    component: Order
+  },
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: Setting
+  },
+  {
+    path: '/photo_list',
+    name: 'Photo_list',
+    component: Photo_list
+  },
+  {
+    path: '/tools',
+    name: 'Tools',
+    component: Tools
+  }
 ]
 const router = new VueRouter({
-        routes,
-        mode: 'hash'
+  routes,
+  mode: 'hash'
 })
 
 

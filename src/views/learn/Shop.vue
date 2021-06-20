@@ -58,7 +58,6 @@
       </span>
     </el-dialog>
 
-
     <!-- 解析后的弹窗 -->
     <el-dialog
       title="检测到含有优惠的商品"
@@ -81,14 +80,11 @@
       </span>
     </el-dialog>
 
-
-
     <div class="bigBox">
       <div
         v-for="item in list"
         :key="item.ID"
         class="itemBox"
-        @click="toDetails(item.GoodsId)"
       >
         <img
           :src="item.ImgUrl"
@@ -98,9 +94,12 @@
           class="itemImg"
         >
         <div class="itemRight">
-          <div>{{item.GoodsName}}</div>
+          <div @click="toDetails(item.GoodsId)">{{item.GoodsName}}</div>
           <div class="price"> <span class="lower">券：{{item.ActMoney}}元</span> 券后：￥<span>{{item.LastPrice}}</span></div>
-          <div class="buyButton">近两小时已抢：{{item.SaleCount}} <div style="color:white" @click="tkl(item.GoodsId)">立即抢</div>
+          <div class="buyButton">预估收益：{{(item.LastPrice * item.TKMoneyRate)/100 | parseInt}} <div
+              style="color:white"
+              @click="tkl(item.GoodsId)"
+            >立即抢</div>
           </div>
         </div>
       </div>
@@ -141,14 +140,21 @@ export default {
   created () {
     this.init();
   },
+  filters: {
+    parseInt: function (value) {
+      return value.toFixed(2)
+    }
+  },
   methods: {
     init () {
       this.getShoList()
     },
-    toDetails(id){
-      this.$router.push({ path: "/GoodsDeails", name: "GoodsDeails", query:{
-        goodsId:id
-      }});
+    toDetails (id) {
+      this.$router.push({
+        path: "/GoodsDeails", name: "GoodsDeails", query: {
+          goodsId: id
+        }
+      });
     },
     identifyDialogSub () {
       this.identifyDialog = false
