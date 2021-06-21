@@ -39,6 +39,15 @@ module.exports = {
         //         '^/api': '',
         // }
 
+      },
+      '^/item_detail': {
+        target: 'http://v2.api.haodanku.com',
+        ws: true,
+        changOrigin: true,
+        // pathRewrite: {
+        //   '/item_detail': '',
+        // }
+
       }
     },
 

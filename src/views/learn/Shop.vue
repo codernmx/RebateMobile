@@ -69,31 +69,31 @@
       <div class="identifyInfoBox">
         <div class="imgTitle">
           <img
-            :src="identifyInfo.originInfo.image"
+            :src="identifyInfo.itempic"
             alt=""
             width="105"
             height="105"
             class="imgTitleImg"
           >
           <div class="titleAmount">
-            {{identifyInfo.originInfo.title}}
-            <div class="amount">优惠券{{identifyInfo.originInfo.amount}}元</div>
+            {{identifyInfo.itemtitle}}
+            <div class="amount">优惠券{{identifyInfo.couponmoney}}元</div>
           </div>
         </div>
         <div class="priceBox">
-          券后<span class="actualPrice">￥{{identifyInfo.originInfo.actualPrice | parseInt}}</span>
-          <span class="originalPrice">￥{{identifyInfo.originInfo.price | parseInt}}</span>
+          券后<span class="actualPrice">￥{{identifyInfo.itemendprice}}</span>
+          <span class="originalPrice">￥{{identifyInfo.itemprice}}</span>
         </div>
       </div>
       <span
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="toDetails(identifyInfo.goodsId)">查看详情</el-button>
+        <el-button @click="toDetails(globalGoodsId)">查看详情</el-button>
         <el-button
           type="danger"
-          @click="buyNow(identifyInfo.goodsId)"
-        >购买返{{identifyInfo.ebateAmount}}</el-button>
+          @click="buyNow(globalGoodsId)"
+        >购买返{{identifyInfo.ebateAmount | parseInt}}</el-button>
       </span>
     </el-dialog>
 
@@ -161,9 +161,10 @@ export default {
   components: { ClipBoard },
   data () {
     return {
+      globalGoodsId:null,//全局商品id
       identifyLoading: false,//解析识别加载动画
       identifyInfo: {
-        ebateAmount:'',
+        ebateAmount: '',
         originInfo: {
           image: ''
         }
@@ -186,7 +187,7 @@ export default {
   filters: {
     parseInt: function (value) {
       if (value) {
-        return value.toFixed(2)
+        return Number(value).toFixed(2)
       } else {
         return value
       }
@@ -228,35 +229,51 @@ export default {
       this.identifyLoading = true
       api.tklParsing(this.identifyDialogInput)//请求解析接口
         .then((res) => {
-          if (res.code == '20003' || res.code =='25003') {//没有解析成功提示
+          if (res.code == '20003' || res.code == '25003') {//没有解析成功提示
             this.closeDialogLoad()
             this.$message.error(res.msg);
             this.identifyDialogInput = ''
           } else if (res.code == '0') {
             this.identifyDialogInput = ''//清空输入框
-            this.identifyInfo = res.data
             //请求转连接 绑定 渠道ID //存在写死渠道IDbug
             // console.log('解析成功', res)
-            if (this.identifyInfo.originInfo.actualPrice) {
-              //获取返利金额（请求单品详情才有数据）
-              api.getGoodsDetails(res.data.goodsId)
-                .then((res) => {
-                  // console.log('详情',res);
-                  //算返利金额
-                  this.identifyInfo.ebateAmount = ((res.data.actualPrice * res.data.commissionRate)/100).toFixed(2)
-                }).catch((err) => {
-                  console.log(err);
-                });
+            this.globalGoodsId = res.data.goodsId
+            api.hdkGetGoodsDetails(res.data.goodsId)
+              .then((res) => {
+                console.log('详情', res);
 
-              this.$message.success('解析成功请等待弹窗');
-              this.closeDialogLoad()
-              setTimeout(() => {
+                this.identifyInfo = res.data
+                this.identifyInfo.ebateAmount = res.data.tkmoney
+
+                this.closeDialogLoad()
                 this.afterIdentifyDialog = true
-              }, 1000)
-            } else {
-              this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
-              this.closeDialogLoad()
-            }
+                //算返利金额
+              }).catch((err) => {
+                console.log(err);
+                this.closeDialogLoad()
+              });
+
+
+            // if (this.identifyInfo.originInfo.actualPrice) {
+            //   //获取返利金额（请求单品详情才有数据）
+            //   api.getGoodsDetails(res.data.goodsId)
+            //     .then((res) => {
+            //       // console.log('详情',res);
+            //       //算返利金额
+            //       this.identifyInfo.ebateAmount = ((res.data.actualPrice * res.data.commissionRate) / 100).toFixed(2)
+            //     }).catch((err) => {
+            //       console.log(err);
+            //     });
+
+            //   this.$message.success('解析成功请等待弹窗');
+            //   this.closeDialogLoad()
+            //   setTimeout(() => {
+            //     this.afterIdentifyDialog = true
+            //   }, 1000)
+            // } else {
+            //   this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
+            //   this.closeDialogLoad()
+            // }
           }
         }).catch((err) => {
           this.$message.error(err);

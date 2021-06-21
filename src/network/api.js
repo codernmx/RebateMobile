@@ -131,9 +131,20 @@ export const getPrivilegeLink = function (id,channelId) {
 		console.log("api登录错误", err)
 	})
 };
+
 //单品详情
 export const getGoodsDetails = function (id) {
 	return axios.get(`/tbk/get/goods/details?id=${id}`).then(res => {
+		console.log(res);
+		return res.data
+	}).catch(err => {
+		console.log("api登录错误", err)
+	})
+};
+
+//单品详情好单库
+export const hdkGetGoodsDetails = function (id) {
+	return axios.get(`/item_detail/apikey/255C1A1FAAC5/itemid/${id}`).then(res => {
 		console.log(res);
 		return res.data
 	}).catch(err => {
