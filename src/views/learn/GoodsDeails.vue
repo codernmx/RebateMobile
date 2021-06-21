@@ -107,7 +107,7 @@ export default {
 <style lang="less" scoped>
 .back {
   font-size: 15px;
-  margin-top: 15px;
+  margin: 15px 0 15px 0;
 }
 .title{
   text-align: center;

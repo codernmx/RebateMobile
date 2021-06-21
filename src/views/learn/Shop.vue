@@ -20,16 +20,16 @@
       class="bg"
     >
     </vue-particles>
-    <div class="nav">
+    <div class="nav navTop">
       <div class="el-icon-arrow-left fz-xl"></div>
-      <div class="diary">购物</div>
-      <div class="fz-xl"></div>
+      <div class="diary">首页</div>
+      <div class="fz-xl el-icon-s-tools"></div>
     </div>
 
     <div
       class="identify"
       @click="identifyDialog = true"
-    >点击识别</div>
+    >点击识别淘口令</div>
 
     <el-dialog
       title="粘贴需要解析的淘口令"
@@ -81,8 +81,9 @@
     </el-dialog>
 
     <div class="bigBox">
+
       <div
-        v-for="item in list"
+        v-for="item in list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         :key="item.ID"
         class="itemBox"
       >
@@ -103,6 +104,22 @@
           </div>
         </div>
       </div>
+
+      <el-pagination
+        background
+        class="pageCenter"
+        hide-on-single-page
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :pager-count="5"
+        :page-size="pagesize"
+        :total="list.length"
+        layout="prev, pager, next"
+      >
+        <!-- layout="prev, pager, next,jumper" -->
+      </el-pagination>
+
       <el-dialog
         :visible.sync="tklDialog.dialog"
         width="70%"
@@ -134,6 +151,8 @@ export default {
         dialog: false,
         dialogValue: ''
       },
+      pagesize: 20,//默认分页每页数据量
+      currentPage: 1,//默认展示第一页数据
       list: [],//产品列表
     };
   },
@@ -148,6 +167,7 @@ export default {
   methods: {
     init () {
       this.getShoList()
+
     },
     toDetails (id) {
       this.$router.push({
@@ -155,6 +175,12 @@ export default {
           goodsId: id
         }
       });
+    },
+    handleSizeChange: function (val) {
+      this.pagesize = val;
+    },
+    handleCurrentChange: function (currentPage) {
+      this.currentPage = currentPage;
     },
     identifyDialogSub () {
       this.identifyDialog = false
@@ -170,9 +196,10 @@ export default {
             this.identifyDialogInput = ''
             this.$message.success('解析成功请等待弹窗');
             //请求转连接 绑定 渠道ID //存在写死渠道IDbug
-            api.getPrivilegeLink(res.data.goodsId, 2736562433)
+            api.getPrivilegeLink(res.data.goodsId, localStorage.getItem('channelId'))
               .then((res) => {
-                this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+                // this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+                this.tklDialog.dialogValue = res.data.tpwd
                 this.tklDialog.dialog = true
                 console.log(res.data.tpwd);
               }).catch((err) => {
@@ -184,12 +211,14 @@ export default {
         });
     },
     tkl (id) {
-      api.tkl(id)
+      api.getPrivilegeLink(id, localStorage.getItem('channelId'))
         .then((res) => {
-          this.tklDialog.dialogValue = '0(' + res.tkl + ')/'
+          // this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+          this.tklDialog.dialogValue = res.data.tpwd
           this.tklDialog.dialog = true
+          console.log(res.data.tpwd);
         }).catch((err) => {
-          this.$message.error(err);
+          console.log(err);
         });
     },
     getShoList () {
@@ -213,23 +242,29 @@ export default {
     position: absolute;
     z-index: -1;
   }
+  .navTop {
+    margin-top: 50px;
+  }
   .identify {
-    width: 50px;
-    padding: 8px;
+    width: 100%;
     height: 50px;
     color: #898070;
     position: fixed;
-    top: 50px;
-    right: 20px;
-    float: right;
+    top: 0;
     background: #fdd48a;
-    border-radius: 5px;
+    text-align: center;
+    line-height: 50px;
   }
 }
 
 .bigBox {
   padding-left: 15px;
   padding-right: 15px;
+  .pageCenter{
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
   .line {
     padding-bottom: 51px;
   }

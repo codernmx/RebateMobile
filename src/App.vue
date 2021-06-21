@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <keep-live>
+    <keep-alive>
       <router-view v-if="$route.meta.noRefresh"></router-view>
-    </keep-live>
+    </keep-alive>
     <router-view v-if="!$route.meta.noRefresh"></router-view>
     <!-- 判断是否是需要显示的界面 -->
     <MainTabBar v-if="!$route.meta.keepAlive"></MainTabBar>
