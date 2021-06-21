@@ -131,6 +131,7 @@ export const getPrivilegeLink = function (id,channelId) {
 		console.log("api登录错误", err)
 	})
 };
+//单品详情
 export const getGoodsDetails = function (id) {
 	return axios.get(`/tbk/get/goods/details?id=${id}`).then(res => {
 		console.log(res);

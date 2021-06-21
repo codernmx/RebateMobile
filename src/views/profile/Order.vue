@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs stretch v-model="activeName" @tab-click="handleClick" class="tablePane">
       <el-tab-pane label="全部" name="first">全部</el-tab-pane>
       <el-tab-pane label="待结算" name="second">待结算</el-tab-pane>
       <el-tab-pane label="已结算" name="third">已结算</el-tab-pane>
@@ -34,5 +34,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+.tablePane{
+  text-align: center;
+}
 </style>
