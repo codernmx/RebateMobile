@@ -139,6 +139,15 @@ export const getGoodsDetails = function (id) {
 		console.log("api登录错误", err)
 	})
 };
+//各大榜单
+export const getGoodsLists = function (id) {
+	return axios.get(`/tbk/get/goods/lists?pageId=${id}`).then(res => {
+		console.log(res);
+		return res.data
+	}).catch(err => {
+		console.log("api登录错误", err)
+	})
+};
 
 
 

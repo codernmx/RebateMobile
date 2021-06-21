@@ -67,7 +67,10 @@ export default {
 
   data () {
     return {
-      info: {},//详情信息
+      info: {
+        commissionRate:null,
+        actualPrice:null,
+      },//详情信息
       detailPics: [],//转换后的图片
       imgs: [],//转换后的图片
       isImgs: null,
@@ -89,7 +92,7 @@ export default {
           if (res.data.detailPics) {
             this.detailPics = JSON.parse(res.data.detailPics)
             this.isImgs = true
-            console.log(this.detailPics)
+            // console.log(this.detailPics)
           } else {
             this.imgs.push(res.data.imgs)
           }
