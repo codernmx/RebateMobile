@@ -228,7 +228,7 @@ export default {
       this.identifyLoading = true
       api.tklParsing(this.identifyDialogInput)//请求解析接口
         .then((res) => {
-          if (res.code == '20003') {//没有解析成功提示
+          if (res.code == '20003' || res.code =='25003') {//没有解析成功提示
             this.closeDialogLoad()
             this.$message.error(res.msg);
             this.identifyDialogInput = ''
