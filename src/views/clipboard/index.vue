@@ -32,7 +32,7 @@ export default {
     },
     clipboardSuccess () {
       this.$message({
-        message: '复制成功',
+        message: '复制成功，请打开淘宝',
         type: 'success',
         duration: 1500
       })
@@ -48,8 +48,8 @@ export default {
     margin-bottom: 15px;
   }
   .tkl {
-    height: 40px;
-    line-height: 40px;
+    
+    line-height: 20px;
     width: 160px;
     margin: 0 auto;
     background: #fff5f7;

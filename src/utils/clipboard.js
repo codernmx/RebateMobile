@@ -3,7 +3,7 @@ import Clipboard from 'clipboard'
 
 function clipboardSuccess() {
   Vue.prototype.$message({
-    message: '复制成功',
+    message: '复制成功，请打开淘宝',
     type: 'success',
     center:true,
     duration: 1500

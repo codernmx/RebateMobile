@@ -161,7 +161,7 @@ export default {
   components: { ClipBoard },
   data () {
     return {
-      globalGoodsId:null,//全局商品id
+      globalGoodsId: null,//全局商品id
       identifyLoading: false,//解析识别加载动画
       identifyInfo: {
         ebateAmount: '',
@@ -199,9 +199,10 @@ export default {
     },
     buyNow (goodsId) {
       this.afterIdentifyDialog = false
-      api.getPrivilegeLink(goodsId, localStorage.getItem('channelId'))
+      const channelId = localStorage.getItem('channelId')
+      api.getPrivilegeLink(goodsId, channelId)
         .then((res) => {
-          this.tklDialog.dialogValue = res.data.tpwd
+          this.tklDialog.dialogValue = res.data.longTpwd
           this.tklDialog.dialog = true
           console.log(res.data.tpwd);
         }).catch((err) => {
