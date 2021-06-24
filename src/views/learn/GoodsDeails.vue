@@ -94,7 +94,10 @@ export default {
             this.isImgs = true
             // console.log(this.detailPics)
           } else {
-            this.imgs.push(res.data.imgs)
+            this.imgs.push(res.data.mainPic)
+            if(res.data.imgs){
+              this.imgs.push(res.data.imgs)
+            }
           }
         }).catch((err) => {
           console.log(err);
