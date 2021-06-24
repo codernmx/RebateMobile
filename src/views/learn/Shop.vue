@@ -230,11 +230,7 @@ export default {
       this.identifyLoading = true
       api.tklParsing(this.identifyDialogInput)//请求解析接口
         .then((res) => {
-          if (res.code == '20003' || res.code == '25003') {//没有解析成功提示
-            this.closeDialogLoad()
-            this.$message.error(res.msg);
-            this.identifyDialogInput = ''
-          } else if (res.code == '0') {
+          if (res.code == '0') {
             this.identifyDialogInput = ''//清空输入框
             //请求转连接 绑定 渠道ID //存在写死渠道IDbug
             // console.log('解析成功', res)
@@ -242,40 +238,47 @@ export default {
             api.hdkGetGoodsDetails(res.data.goodsId)
               .then((res) => {
                 console.log('详情', res);
-
-                this.identifyInfo = res.data
-                this.identifyInfo.ebateAmount = res.data.tkmoney
-
-                this.closeDialogLoad()
-                this.afterIdentifyDialog = true
+                if (res.msg != '该宝贝详情不存在。') {
+                  this.identifyInfo = res.data//解析得到的值
+                  this.identifyInfo.ebateAmount = res.data.tkmoney
+                  this.closeDialogLoad()
+                  this.afterIdentifyDialog = true
+                } else {
+                  this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
+                  this.closeDialogLoad()
+                }
                 //算返利金额
               }).catch((err) => {
                 console.log(err);
                 this.closeDialogLoad()
               });
-
-
-            // if (this.identifyInfo.originInfo.actualPrice) {
-            //   //获取返利金额（请求单品详情才有数据）
-            //   api.getGoodsDetails(res.data.goodsId)
-            //     .then((res) => {
-            //       // console.log('详情',res);
-            //       //算返利金额
-            //       this.identifyInfo.ebateAmount = ((res.data.actualPrice * res.data.commissionRate) / 100).toFixed(2)
-            //     }).catch((err) => {
-            //       console.log(err);
-            //     });
-
-            //   this.$message.success('解析成功请等待弹窗');
-            //   this.closeDialogLoad()
-            //   setTimeout(() => {
-            //     this.afterIdentifyDialog = true
-            //   }, 1000)
-            // } else {
-            //   this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
-            //   this.closeDialogLoad()
-            // }
+          } else {//没有解析成功提示
+            this.closeDialogLoad()
+            this.$message.error(res.msg);
+            this.identifyDialogInput = ''
           }
+
+          // if (this.identifyInfo.originInfo.actualPrice) {
+          //   //获取返利金额（请求单品详情才有数据）
+          //   api.getGoodsDetails(res.data.goodsId)
+          //     .then((res) => {
+          //       // console.log('详情',res);
+          //       //算返利金额
+          //       this.identifyInfo.ebateAmount = ((res.data.actualPrice * res.data.commissionRate) / 100).toFixed(2)
+          //     }).catch((err) => {
+          //       console.log(err);
+          //     });
+
+          //   this.$message.success('解析成功请等待弹窗');
+          //   this.closeDialogLoad()
+          //   setTimeout(() => {
+          //     this.afterIdentifyDialog = true
+          //   }, 1000)
+          // } else {
+          //   this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
+          //   this.closeDialogLoad()
+          // }
+
         }).catch((err) => {
           this.$message.error(err);
         });

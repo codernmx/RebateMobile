@@ -43,11 +43,11 @@
         <div class="withDrawal">
           <div class="expect">
             <div class="word">付款预估收入</div>
-            <div class="price">￥666.1</div>
+            <div class="price">￥{{expect}}</div>
           </div>
           <div class="canCarry">
             <div class="word">可提现金额</div>
-            <div class="price">￥520.1</div>
+            <div class="price">￥{{expect}}</div>
           </div>
           <div class="toWithDrawal">提现</div>
         </div>
@@ -96,6 +96,7 @@ export default {
   data () {
     return {
       user: null,
+      expect: null,
       info: {
         user: null,
       },
@@ -108,7 +109,18 @@ export default {
     //初始化数据，请求默认数据
     init () {
       this.user = localStorage.getItem('user')
-
+      api.getOrderList() //获取所有订单
+        .then((res) => {
+          console.log(res)
+          let num = null
+          res.DATA.forEach(item => {
+            num = num + item.pub_share_pre_fee * item.item_num
+          });
+          this.expect = num
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // 跳转到相册
     toPhotoList () {
@@ -206,7 +218,7 @@ export default {
         font-size: 14px;
         line-height: 26px;
       }
-      .price{
+      .price {
         color: #f40;
         font-size: 18px;
       }
@@ -216,7 +228,7 @@ export default {
         font-size: 14px;
         line-height: 26px;
       }
-      .price{
+      .price {
         color: #f40;
         font-size: 18px;
       }

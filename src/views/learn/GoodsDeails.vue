@@ -48,7 +48,7 @@
       <!-- <div>佣金比率{{info.commissionRate}}</div> -->
       <div class="shareBuyButton">
         <el-button type="danger">
-          立即分享
+          分享赚{{((info.actualPrice *info.commissionRate)/100) | parseInt}}
         </el-button>
         <el-button type="danger">
           购买返{{((info.actualPrice *info.commissionRate)/100) | parseInt}}
@@ -68,8 +68,8 @@ export default {
   data () {
     return {
       info: {
-        commissionRate:null,
-        actualPrice:null,
+        commissionRate: null,
+        actualPrice: null,
       },//详情信息
       detailPics: [],//转换后的图片
       imgs: [],//转换后的图片
@@ -95,7 +95,7 @@ export default {
             // console.log(this.detailPics)
           } else {
             this.imgs.push(res.data.mainPic)
-            if(res.data.imgs){
+            if (res.data.imgs) {
               this.imgs.push(res.data.imgs)
             }
           }
@@ -115,7 +115,7 @@ export default {
   font-size: 15px;
   margin: 15px 0 15px 0;
 }
-.title{
+.title {
   text-align: center;
   margin-top: 15px;
 }
@@ -125,11 +125,11 @@ export default {
   line-height: 40px;
   display: flex;
   justify-content: center;
-  .priceOriginal{
+  .priceOriginal {
     font-size: 30px;
     line-height: 40px;
     margin-right: 15px;
-    text-decoration:line-through
+    text-decoration: line-through;
   }
   .priceIcon {
     color: #f40;

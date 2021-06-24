@@ -100,12 +100,18 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      noRefresh: true
+    }
   },
   {
     path: '/order',
     name: 'Order',
-    component: Order
+    component: Order,
+    meta: {
+      noRefresh: true
+    }
   },
   {
     path: '/setting',

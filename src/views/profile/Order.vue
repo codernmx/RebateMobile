@@ -41,7 +41,9 @@
               <div class="orderNum"><span>订单</span>{{item.trade_parent_id}}</div>
             </div>
           </div>
+          <el-divider content-position="center" class="bottom">到底了，哥哥！</el-divider>
           <div class="line"></div>
+          
         </div>
       </el-tab-pane>
       <el-tab-pane
@@ -91,7 +93,7 @@ export default {
       // console.log(tab, event);
     },
     init () {//默认展示的数据
-      getOrderList() //获取照片
+      getOrderList() //获取订单
         .then((res) => {
           console.log(res)
           this.orderList = res.DATA
@@ -166,8 +168,11 @@ export default {
         }
       }
     }
+    .bottom{
+      color: darkgrey;
+    }
     .line {
-      margin-top: 50px;
+      margin-top: 70px;
     }
   }
 }
