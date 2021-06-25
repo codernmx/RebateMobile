@@ -41,23 +41,32 @@
               <div class="orderNum"><span>订单</span>{{item.trade_parent_id}}</div>
             </div>
           </div>
-          <el-divider content-position="center" class="bottom">到底了，哥哥！</el-divider>
+          <el-divider
+            content-position="center"
+            class="bottom"
+          >到底了，哥哥！</el-divider>
           <div class="line"></div>
-          
+
         </div>
       </el-tab-pane>
       <el-tab-pane
         label="待结算"
         name="second"
-      >待结算</el-tab-pane>
+      >
+        <div></div>
+      </el-tab-pane>
       <el-tab-pane
         label="已结算"
         name="third"
-      >已结算</el-tab-pane>
+      >
+        <div></div>
+      </el-tab-pane>
       <el-tab-pane
         label="已失效"
         name="fourth"
-      >已失效</el-tab-pane>
+      >
+        <div></div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -168,7 +177,7 @@ export default {
         }
       }
     }
-    .bottom{
+    .bottom {
       color: darkgrey;
     }
     .line {

@@ -49,7 +49,7 @@
             <div class="word">可提现金额</div>
             <div class="price">￥{{expect}}</div>
           </div>
-          <div class="toWithDrawal">提现</div>
+          <div class="toWithDrawal" @click="toWithDrawal">提现</div>
         </div>
         <div
           class="cell"
@@ -132,11 +132,14 @@ export default {
     },
     //跳转
     toTools () {
-      this.$router.push({ path: "/about", name: "About", });
+      this.$router.push({ path: "/tools", name: "Tools", });
     },
     //到订单
     toOrderList () {
       this.$router.push({ path: "/order", name: "Order", });
+    },
+    toWithDrawal(){
+      this.$router.push({ path: "/withDrawal", name: "WithDrawal", });
     }
   },
 };
