@@ -97,32 +97,52 @@
       </span>
     </el-dialog>
 
-    <div class="bigBox">
-
-      <div
-        v-for="item in list"
-        :key="item.ID"
-        class="itemBox"
+    <div style="overflow: auto;height:1000px;">
+      <el-carousel
+        :interval="2000"
+        arrow="always"
+        height="150px"
+        indicator-position="none"
       >
-        <img
-          :src="item.mainPic"
-          alt=""
-          width="105"
-          height="105"
-          class="itemImg"
+        <el-carousel-item
+          v-for="(item,index) in taoCarouseList"
+          :key="index"
         >
-        <div class="itemRight">
-          <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
-          <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
-          <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
-              style="color:white"
-              @click="tkl(item.goodsId)"
-            >立即抢</div>
+          <el-image
+            :src="item.topicImage"
+            fit="fit"
+          ></el-image>
+        </el-carousel-item>
+      </el-carousel> 
+      <div
+        v-if="list.length>1"
+        class="bigBox"
+        v-infinite-scroll="load"
+      >
+        <div
+          v-for="(item,index) in list"
+          :key="index"
+          class="itemBox"
+        >
+          <img
+            :src="item.mainPic"
+            alt=""
+            width="105"
+            height="105"
+            class="itemImg"
+          >
+          <div class="itemRight">
+            <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
+            <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
+            <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
+                style="color:white"
+                @click="tkl(item.goodsId)"
+              >立即抢</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <el-pagination
+        <!-- <el-pagination
         background
         class="pageCenter"
         hide-on-single-page
@@ -134,19 +154,20 @@
         :total="200"
         layout="prev, pager, next"
       >
+      </el-pagination> -->
         <!-- layout="prev, pager, next,jumper" -->
-      </el-pagination>
 
-      <el-dialog
-        :visible.sync="tklDialog.dialog"
-        width="70%"
-        custom-class="myDialog"
-        center
-      >
-        <ClipBoard :inputData=tklDialog.dialogValue />
-      </el-dialog>
-      <div class="line"></div>
+        <el-dialog
+          :visible.sync="tklDialog.dialog"
+          width="70%"
+          custom-class="myDialog"
+          center
+        >
+          <ClipBoard :inputData=tklDialog.dialogValue />
+        </el-dialog>
+      </div>
     </div>
+    <div class="line"></div>
     <el-backtop :bottom="100">
       <div class="el-icon-caret-top"></div>
     </el-backtop>
@@ -161,6 +182,8 @@ export default {
   components: { ClipBoard },
   data () {
     return {
+      count: 0,
+      taoCarouseList: [],//存轮播图
       globalGoodsId: null,//全局商品id
       identifyLoading: false,//解析识别加载动画
       identifyInfo: {
@@ -196,6 +219,15 @@ export default {
   methods: {
     init () {
       this.getShopList(1)
+      this.getCarouseList()
+    },
+    load () {
+      console.log('11')
+      this.list.push(this.list[5])
+    },
+    load1 () {
+      this.count += 2
+      console.log(this.count)
     },
     buyNow (goodsId) {
       this.afterIdentifyDialog = false
@@ -257,28 +289,6 @@ export default {
             this.$message.error(res.msg);
             this.identifyDialogInput = ''
           }
-
-          // if (this.identifyInfo.originInfo.actualPrice) {
-          //   //获取返利金额（请求单品详情才有数据）
-          //   api.getGoodsDetails(res.data.goodsId)
-          //     .then((res) => {
-          //       // console.log('详情',res);
-          //       //算返利金额
-          //       this.identifyInfo.ebateAmount = ((res.data.actualPrice * res.data.commissionRate) / 100).toFixed(2)
-          //     }).catch((err) => {
-          //       console.log(err);
-          //     });
-
-          //   this.$message.success('解析成功请等待弹窗');
-          //   this.closeDialogLoad()
-          //   setTimeout(() => {
-          //     this.afterIdentifyDialog = true
-          //   }, 1000)
-          // } else {
-          //   this.$message.error('当前商品不可转换，或者未加入淘宝客返利');
-          //   this.closeDialogLoad()
-          // }
-
         }).catch((err) => {
           this.$message.error(err);
         });
@@ -308,6 +318,20 @@ export default {
           this.$message.error(err);
         });
     },
+    getCarouseList () {
+      api.get('/tbk/get/carouseList')
+        .then((res) => {
+
+          res.data.forEach(item => {
+            if (item.sourceType == 2)
+              this.taoCarouseList.push(item)
+          });
+
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+    }
   },
 };
 </script>
@@ -384,6 +408,10 @@ export default {
   }
   .line {
     padding-bottom: 51px;
+  }
+  .bigBox {
+    height: 100vh;
+    overflow: auto;
   }
   .itemBox {
     display: flex;
