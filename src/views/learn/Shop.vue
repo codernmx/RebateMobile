@@ -30,7 +30,83 @@
       class="identify"
       @click="identifyDialog = true"
     >点击识别淘口令</div>
+    <div style="overflow: auto;height:1000px;">
+      <el-carousel
+        :interval="2000"
+        arrow="always"
+        height="150px"
+        indicator-position="none"
+      >
+        <el-carousel-item
+          v-for="(item,index) in taoCarouseList"
+          :key="index"
+        >
+          <el-image
+            :src="item.topicImage"
+            fit="fit"
+          ></el-image>
+        </el-carousel-item>
+      </el-carousel>
+      <div
+        v-if="list.length>1"
+        class="bigBox"
+        v-infinite-scroll="load"
+      >
+        <div
+          v-for="(item,index) in list"
+          :key="index"
+          class="itemBox"
+        >
+          <img
+            :src="item.mainPic"
+            alt=""
+            width="105"
+            height="105"
+            class="itemImg"
+          >
+          <div class="itemRight">
+            <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
+            <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
+            <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
+                style="color:white"
+                @click="tkl(item.goodsId)"
+              >立即抢</div>
+            </div>
+          </div>
+        </div>
 
+        <!-- <el-pagination
+        background
+        class="pageCenter"
+        hide-on-single-page
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :pager-count="5"
+        :page-size="pagesize"
+        :total="200"
+        layout="prev, pager, next"
+      >
+      </el-pagination> -->
+        <!-- layout="prev, pager, next,jumper" -->
+
+        <el-dialog
+          :visible.sync="tklDialog.dialog"
+          width="70%"
+          custom-class="myDialog"
+          center
+        >
+          <ClipBoard :inputData=tklDialog.dialogValue />
+        </el-dialog>
+      </div>
+    </div>
+    <div
+      class="loading"
+      v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
+    ></div>
+    <div class="line"></div>
     <el-dialog
       title="粘贴需要解析的淘口令"
       v-loading="identifyLoading"
@@ -96,78 +172,6 @@
         >购买返{{identifyInfo.ebateAmount | parseInt}}</el-button>
       </span>
     </el-dialog>
-
-    <div style="overflow: auto;height:1000px;">
-      <el-carousel
-        :interval="2000"
-        arrow="always"
-        height="150px"
-        indicator-position="none"
-      >
-        <el-carousel-item
-          v-for="(item,index) in taoCarouseList"
-          :key="index"
-        >
-          <el-image
-            :src="item.topicImage"
-            fit="fit"
-          ></el-image>
-        </el-carousel-item>
-      </el-carousel> 
-      <div
-        v-if="list.length>1"
-        class="bigBox"
-        v-infinite-scroll="load"
-      >
-        <div
-          v-for="(item,index) in list"
-          :key="index"
-          class="itemBox"
-        >
-          <img
-            :src="item.mainPic"
-            alt=""
-            width="105"
-            height="105"
-            class="itemImg"
-          >
-          <div class="itemRight">
-            <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
-            <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
-            <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
-                style="color:white"
-                @click="tkl(item.goodsId)"
-              >立即抢</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- <el-pagination
-        background
-        class="pageCenter"
-        hide-on-single-page
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :pager-count="5"
-        :page-size="pagesize"
-        :total="200"
-        layout="prev, pager, next"
-      >
-      </el-pagination> -->
-        <!-- layout="prev, pager, next,jumper" -->
-
-        <el-dialog
-          :visible.sync="tklDialog.dialog"
-          width="70%"
-          custom-class="myDialog"
-          center
-        >
-          <ClipBoard :inputData=tklDialog.dialogValue />
-        </el-dialog>
-      </div>
-    </div>
-    <div class="line"></div>
     <el-backtop :bottom="100">
       <div class="el-icon-caret-top"></div>
     </el-backtop>
@@ -182,7 +186,8 @@ export default {
   components: { ClipBoard },
   data () {
     return {
-      count: 0,
+      count: 1,
+      loading:false,
       taoCarouseList: [],//存轮播图
       globalGoodsId: null,//全局商品id
       identifyLoading: false,//解析识别加载动画
@@ -222,12 +227,13 @@ export default {
       this.getCarouseList()
     },
     load () {
-      console.log('11')
-      this.list.push(this.list[5])
-    },
-    load1 () {
-      this.count += 2
+      this.loading = true
+      this.count++
       console.log(this.count)
+      setTimeout(() => {
+        this.loading = false
+        this.getShopList(this.count)
+      }, 4000)
     },
     buyNow (goodsId) {
       this.afterIdentifyDialog = false
@@ -312,7 +318,9 @@ export default {
       api.getGoodsLists(pageId)
         .then((res) => {
           console.log(res)
-          this.list = res.data
+          res.data.forEach(item => {
+            this.list.push(item)
+          });
         })
         .catch((err) => {
           this.$message.error(err);
@@ -357,6 +365,10 @@ export default {
     text-align: center;
     line-height: 50px;
   }
+}
+.loading{
+  height: 51px;
+  width: 100%;
 }
 .identifyInfoBox {
   .imgTitle {
