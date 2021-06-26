@@ -1,28 +1,35 @@
 <template>
   <div id="message">
-
-    <!-- <div>
-                        <div class="send">
-                                <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                <el-button type="success">成功按钮</el-button>
-                        </div>
-                </div> -->
     <div class="nav">
       <div class="el-icon-arrow-left fz-xl"></div>
-      <div class="diary">留言</div>
+      <div class="diary">9.9包邮</div>
       <div class="el-icon-refresh fz-xl"></div>
     </div>
-    <div v-loading="loading">
-      <div v-for="item in message_list"
-           :key="item.id"
-           class="box">
-        <div>
-          <img src="https://file.nmxgzs.cn/upload/images/head.jpg"
-               class="head"
-               alt="">
-        </div>
-        <div>
-          <p>{{ item.CONTENT }}</p>
+
+    <div
+      class="bigBox"
+      v-loading="loading"
+    >
+      <div
+        v-for="(item,index) in nineGoodsList"
+        :key="index"
+        class="itemBox"
+      >
+        <img
+          :src="item.mainPic"
+          alt=""
+          width="105"
+          height="105"
+          class="itemImg"
+        >
+        <div class="itemRight">
+          <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
+          <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
+          <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
+              style="color:white"
+              @click="tkl(item.goodsId)"
+            >立即抢</div>
+          </div>
         </div>
       </div>
     </div>
@@ -38,22 +45,24 @@
                         <p>若有来世</p>
                         <p>❤️我还会选择爱你❤️</p>
                 </div> -->
-    <vue-particles color="#FF5777"
-                   :particleOpacity="0.6"
-                   :particlesNumber="50"
-                   shapeType="circle"
-                   :particleSize="4"
-                   linesColor="#FF5777"
-                   :linesWidth="1"
-                   :lineLinked="true"
-                   :lineOpacity="0.4"
-                   :linesDistance="130"
-                   :moveSpeed="2"
-                   :hoverEffect="true"
-                   hoverMode="grab"
-                   :clickEffect="true"
-                   clickMode="push"
-                   class="bg">
+    <vue-particles
+      color="#FF5777"
+      :particleOpacity="0.6"
+      :particlesNumber="50"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#FF5777"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="130"
+      :moveSpeed="2"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="bg"
+    >
     </vue-particles>
     <div style="margin-bottom: 50px"></div>
   </div>
@@ -66,12 +75,23 @@ export default {
   components: {},
   data () {
     return {
+      nineGoodsList: [],
       loading: true,
       message_list: [],
     };
   },
   created () {
     this.init();
+    this.getNineGoodsList();
+  },
+  filters: {
+    parseInt: function (value) {
+      if (value) {
+        return Number(value).toFixed(2)
+      } else {
+        return value
+      }
+    }
   },
   methods: {
     //初始化数据，请求默认数据
@@ -86,11 +106,22 @@ export default {
           console.log(err);
         });
     },
+    getNineGoodsList () {
+      api.get('/tbk/get/nine/goodsList')
+        .then((res) => {
+          this.nineGoodsList = res.data.list
+          console.log(res.data.list)
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+    },
   },
 };
 </script>
 
-<style scoped>
+
+<style lang="less" scoped>
 #message {
   overflow-x: hidden;
 }
@@ -125,5 +156,41 @@ export default {
   position: absolute;
   top: 0;
   z-index: -1;
+}
+
+.itemBox {
+  display: flex;
+  margin-top: 15px;
+  .itemImg {
+    border-radius: 10px;
+  }
+  .itemRight {
+    margin-left: 10px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    .price {
+      color: #fe355d;
+      .lower {
+        padding-right: 10px;
+        background: #ff6a69;
+        color: #ffffff;
+        padding-left: 10px;
+      }
+    }
+    .buyButton {
+      height: 35px;
+      background: url(https://web.cms.haodanku.com/static/img/todayBg.png)
+        center no-repeat;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      padding-right: 7px;
+      font-size: 15px;
+      justify-content: space-between;
+    }
+  }
 }
 </style>

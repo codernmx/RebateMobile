@@ -53,7 +53,7 @@
                                 src="~assets/img/tabbar/shopcart_active.svg"
                                 alt=""
                         />
-                        <div slot="item-text">留言</div>
+                        <div slot="item-text">9.9包邮</div>
                 </tab-bar-item>
 
                 <tab-bar-item path="/profile">

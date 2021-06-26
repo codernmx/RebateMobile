@@ -30,7 +30,7 @@
       class="identify"
       @click="identifyDialog = true"
     >点击识别淘口令</div>
-    <div style="overflow: auto;height:1000px;">
+    <div style="overflow: auto;height:1500px">
       <el-carousel
         :interval="2000"
         arrow="always"
@@ -51,6 +51,7 @@
         v-if="list.length>1"
         class="bigBox"
         v-infinite-scroll="load"
+        infinite-scroll-delay="1500"
       >
         <div
           v-for="(item,index) in list"
@@ -74,8 +75,9 @@
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- <el-pagination
+      <!-- <el-pagination
         background
         class="pageCenter"
         hide-on-single-page
@@ -88,17 +90,8 @@
         layout="prev, pager, next"
       >
       </el-pagination> -->
-        <!-- layout="prev, pager, next,jumper" -->
+      <!-- layout="prev, pager, next,jumper" -->
 
-        <el-dialog
-          :visible.sync="tklDialog.dialog"
-          width="70%"
-          custom-class="myDialog"
-          center
-        >
-          <ClipBoard :inputData=tklDialog.dialogValue />
-        </el-dialog>
-      </div>
     </div>
     <div
       class="loading"
@@ -134,7 +127,14 @@
         >解析</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog
+      :visible.sync="tklDialog.dialog"
+      width="70%"
+      custom-class="myDialog"
+      center
+    >
+      <ClipBoard :inputData=tklDialog.dialogValue />
+    </el-dialog>
     <!-- 解析后的弹窗 -->
     <el-dialog
       title="检测到含有优惠的商品"
@@ -187,7 +187,7 @@ export default {
   data () {
     return {
       count: 1,
-      loading:false,
+      loading: false,
       taoCarouseList: [],//存轮播图
       globalGoodsId: null,//全局商品id
       identifyLoading: false,//解析识别加载动画
@@ -230,10 +230,11 @@ export default {
       this.loading = true
       this.count++
       console.log(this.count)
+      // alert(this.count)
       setTimeout(() => {
-        this.loading = false
         this.getShopList(this.count)
-      }, 4000)
+        this.loading = false
+      }, 3000)
     },
     buyNow (goodsId) {
       this.afterIdentifyDialog = false
@@ -318,9 +319,7 @@ export default {
       api.getGoodsLists(pageId)
         .then((res) => {
           console.log(res)
-          res.data.forEach(item => {
-            this.list.push(item)
-          });
+          this.list = [...this.list, ...res.data]
         })
         .catch((err) => {
           this.$message.error(err);
@@ -329,12 +328,10 @@ export default {
     getCarouseList () {
       api.get('/tbk/get/carouseList')
         .then((res) => {
-
           res.data.forEach(item => {
             if (item.sourceType == 2)
               this.taoCarouseList.push(item)
           });
-
         })
         .catch((err) => {
           this.$message.error(err);
@@ -366,7 +363,7 @@ export default {
     line-height: 50px;
   }
 }
-.loading{
+.loading {
   height: 51px;
   width: 100%;
 }
