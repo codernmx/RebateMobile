@@ -30,7 +30,7 @@
       class="identify"
       @click="identifyDialog = true"
     >点击识别淘口令</div>
-    <div style="overflow: auto;height:1500px">
+    <div style="overflow: auto;height:1200px">
       <el-carousel
         :interval="2000"
         arrow="always"
@@ -51,7 +51,7 @@
         v-if="list.length>1"
         class="bigBox"
         v-infinite-scroll="load"
-        infinite-scroll-delay="1500"
+        infinite-scroll-distance="10px"
       >
         <div
           v-for="(item,index) in list"
@@ -231,8 +231,8 @@ export default {
       this.count++
       console.log(this.count)
       // alert(this.count)
+      this.getShopList(this.count)
       setTimeout(() => {
-        this.getShopList(this.count)
         this.loading = false
       }, 3000)
     },

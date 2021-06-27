@@ -5,7 +5,6 @@
       <div class="diary">9.9包邮</div>
       <div class="el-icon-refresh fz-xl"></div>
     </div>
-
     <div
       class="bigBox"
       v-loading="loading"
@@ -64,17 +63,30 @@
       class="bg"
     >
     </vue-particles>
+    <el-dialog
+      :visible.sync="tklDialog.dialog"
+      width="70%"
+      custom-class="myDialog"
+      center
+    >
+      <ClipBoard :inputData=tklDialog.dialogValue />
+    </el-dialog>
     <div style="margin-bottom: 50px"></div>
   </div>
 </template>
 
 <script>
 import * as api from "../../network/api";
+import ClipBoard from "../clipboard/index.vue";
 export default {
   name: "Message",
-  components: {},
+  components: { ClipBoard },
   data () {
     return {
+      tklDialog: {//淘口令相关
+        dialog: false,
+        dialogValue: ''
+      },
       nineGoodsList: [],
       loading: true,
       message_list: [],
@@ -82,7 +94,7 @@ export default {
   },
   created () {
     this.init();
-    this.getNineGoodsList();
+    this.getNineGoodsList(2);
   },
   filters: {
     parseInt: function (value) {
@@ -100,17 +112,30 @@ export default {
         .then((res) => {
           console.log(res);
           this.message_list = res.DATA;
-          this.loading = false
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    getNineGoodsList () {
-      api.get('/tbk/get/nine/goodsList')
+    //生成淘口令
+    tkl (id) {
+      api.getPrivilegeLink(id, localStorage.getItem('channelId'))
+        .then((res) => {
+          // this.tklDialog.dialogValue = '0(' + res.data.tpwd + ')/'
+          this.tklDialog.dialogValue = res.data.tpwd
+          this.tklDialog.dialog = true
+          console.log(res.data.tpwd);
+        }).catch((err) => {
+          console.log(err);
+        });
+    },
+    getNineGoodsList (id) {
+      api.get('/tbk/get/nine/goodsList', {
+        pageId: id
+      })
         .then((res) => {
           this.nineGoodsList = res.data.list
-          console.log(res.data.list)
+          this.loading = false
         })
         .catch((err) => {
           this.$message.error(err);
