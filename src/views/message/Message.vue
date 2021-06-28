@@ -1,10 +1,14 @@
 <template>
   <div id="message">
     <div class="nav">
-      <div class="el-icon-arrow-left fz-xl"></div>
+      <div
+        class="fz-xl"
+        @click="back"
+      ></div>
       <div class="diary">9.9包邮</div>
-      <div class="el-icon-refresh fz-xl"></div>
+      <div class="fz-xl"></div>
     </div>
+    <el-divider></el-divider>
     <div
       class="bigBox"
       v-loading="loading"
@@ -117,6 +121,17 @@ export default {
           console.log(err);
         });
     },
+    back () {
+      this.$router.go(-1)
+    },
+    toDetails (id) {
+      this.afterIdentifyDialog = false //关弹窗 （不影响用一个）
+      this.$router.push({
+        path: "/GoodsDeails", name: "GoodsDeails", query: {
+          goodsId: id
+        }
+      });
+    },
     //生成淘口令
     tkl (id) {
       api.getPrivilegeLink(id, localStorage.getItem('channelId'))
@@ -186,6 +201,8 @@ export default {
 .itemBox {
   display: flex;
   margin-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
   .itemImg {
     border-radius: 10px;
   }

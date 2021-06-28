@@ -43,13 +43,18 @@
         <div class="withDrawal">
           <div class="expect">
             <div class="word">付款预估收入</div>
-            <div class="price">￥{{expect}}</div>
+            <div class="price">￥{{expect | parseInt}}</div>
           </div>
           <div class="canCarry">
             <div class="word">可提现金额</div>
-            <div class="price">￥{{expect}}</div>
+            <div class="price">￥0.00</div>
           </div>
-          <div class="toWithDrawal" @click="toWithDrawal">提现</div>
+          <div
+            class="toWithDrawal"
+            @click="toWithDrawal"
+          >
+            <div class="word">提现</div>
+          </div>
         </div>
         <div
           class="cell"
@@ -105,6 +110,15 @@ export default {
   created () {
     this.init();
   },
+  filters: {
+    parseInt: function (value) {
+      if (value) {
+        return Number(value).toFixed(2)
+      } else {
+        return value
+      }
+    }
+  },
   methods: {
     //初始化数据，请求默认数据
     init () {
@@ -138,8 +152,30 @@ export default {
     toOrderList () {
       this.$router.push({ path: "/order", name: "Order", });
     },
-    toWithDrawal(){
-      this.$router.push({ path: "/withDrawal", name: "WithDrawal", });
+    toWithDrawal () {
+      // this.$router.push({
+      //   path: "/withDrawal", name: "WithDrawal", params: {
+      //     withDrawal: this.expect
+      //   }
+      // });
+      this.$confirm('亲，您需绑定支付宝才能提现哦', '温馨提示', {
+        customClass: 'confirmBox',
+        confirmButtonText: '好的马上去',
+        cancelButtonText: '下次一定',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$router.push({
+          path: "/bound", name: "Bound", query: {
+            user: localStorage.getItem('user')
+          }
+        });
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消删除'
+        // });
+      });
     }
   },
 };
@@ -155,6 +191,7 @@ export default {
   background: url(../../assets/img/my/bg.jpg);
   /* filter: blur(0.5px);Chrome, Opera */
 }
+
 .name {
   color: #ffffff;
   text-align: center;
@@ -237,8 +274,20 @@ export default {
       }
     }
     .toWithDrawal {
+      height: 46px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      .word {
+        background: #6285ec;
+        color: #e1e1e1;
+        display: block;
+        width: 60px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 30px;
+      }
     }
   }
 }
@@ -255,5 +304,10 @@ export default {
   height: 100vh;
   position: absolute;
   z-index: -1000;
+}
+</style>
+<style>
+.confirmBox {
+  width: 280px;
 }
 </style>

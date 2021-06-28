@@ -31,6 +31,7 @@
       @click="identifyDialog = true"
     >点击识别淘口令</div>
     <div style="overflow: auto;height:1200px">
+      <!-- 轮播图 -->
       <el-carousel
         :interval="2000"
         arrow="always"
@@ -47,6 +48,18 @@
           ></el-image>
         </el-carousel-item>
       </el-carousel>
+      <!-- 轮播图 结束-->
+      <!-- 中间部分 -->
+      <div class="guide">
+        <div class="tb">淘宝</div>
+        <div class="jd">京东</div>
+        <div class="pdd">拼多多</div>
+        <div class="wm">外卖</div>
+        <div class="wm">唯品会</div>
+      </div>
+      <!-- 中间部分 结束 -->
+
+      <!-- 商品循环体 -->
       <div
         v-if="list.length>1"
         class="bigBox"
@@ -76,7 +89,7 @@
           </div>
         </div>
       </div>
-
+      <!-- 商品循环体  结束-->
       <!-- <el-pagination
         background
         class="pageCenter"
@@ -406,7 +419,23 @@ export default {
     }
   }
 }
-
+.guide{
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 15px;
+  .tb,.jd,.wm,.pdd{
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 14px;
+    // color: #FFFFFF   ;
+    // background: #000;
+    border-radius: 50px;
+    // border: 1px dashed;
+    background: pink;
+  }
+}
 .bigBox {
   padding-left: 15px;
   padding-right: 15px;

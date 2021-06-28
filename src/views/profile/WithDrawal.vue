@@ -1,17 +1,43 @@
 <template>
   <div>
     <div class="nav">
-      <div class="el-icon-arrow-left fz-xl" @click="back"></div>
+      <div
+        class="el-icon-arrow-left fz-xl"
+        @click="back"
+      ></div>
       <div class="diary">设置</div>
-      <div class="el-icon-star-off fz-xl" ></div>
+      <div class="el-icon-star-off fz-xl"></div>
     </div>
     <el-card>
       <div>
-        <p>到账支付宝：19923756596</p>
-        <p>提现金额</p>
-        <el-input v-model="money" placeholder="请输入内容"></el-input>
-        <p>可提现余额666</p>
-        <el-button round @click="submit" class="submit">提现</el-button>
+        <div class="inputBox">
+          <div class="left">到账支付宝</div>
+          <div class="right">
+            <div>刘常灵</div>
+            <div>19923756596</div>
+            <div>修改</div>
+          </div>
+        </div>
+        <div class="inputBox">
+          <div class="left">提现金额</div>
+          <div>
+            <el-input
+              class="input"
+              v-model="money"
+              placeholder="请输入提现金额"
+            ></el-input>
+          </div>
+        </div>
+        <div class="inputBox">
+          <div class="left">可提现余额</div>
+          <div>{{actual}}</div>
+        </div>
+
+        <el-button
+          round
+          @click="submit"
+          class="submit"
+        >立即提现</el-button>
       </div>
     </el-card>
   </div>
@@ -24,7 +50,8 @@ export default {
 
   data () {
     return {
-      money:''
+      actual: '',
+      money: ''
     };
   },
 
@@ -34,12 +61,12 @@ export default {
 
   methods: {
     init () {//默认展示的数据
+      this.actual = this.$route.params.withDrawal
     },
-    back(){
+    back () {
       this.$router.go(-1)
-      console.log(this.$router)
     },
-    submit(){
+    submit () {
       this.$message.success('请等待审核')
       this.money = ''
     }
@@ -49,12 +76,28 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.submit{
+.submit {
   width: 200px;
   margin: 0 auto;
   display: block;
 }
-p{
+.inputBox {
+  height: 34px;
+  line-height: 34px;
+  display: flex;
+  align-items: center;
+  .left {
+    width: 100px;
+    text-align: justify;
+  }
+  .right{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    
+  }
+}
+p {
   line-height: 34px;
 }
 </style>

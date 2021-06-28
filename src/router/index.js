@@ -13,6 +13,7 @@ const Login = () => import('../views/login/Login')
 const Register = () => import('../views/login/Register')
 const Profile = () => import('../views/profile/Profile')
 const WithDrawal = () => import('../views/profile/WithDrawal')
+const Bound = () => import('../views/profile/Bound')
 const Order = () => import('../views/profile/Order')
 const Photo_list = () => import('../views/profile/Photo_list')
 const Setting = () => import('../views/profile/Setting')
@@ -102,6 +103,11 @@ const routes = [
     path: '/withDrawal',
     name: 'WithDrawal',
     component: WithDrawal
+  },
+  {
+    path: '/bound',
+    name: 'Bound',
+    component: Bound
   },
   {
     path: '/profile',

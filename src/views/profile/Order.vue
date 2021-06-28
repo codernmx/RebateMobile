@@ -36,7 +36,7 @@
               <div class="goodsTitle">{{item.item_title}}</div>
               <div class="timePrice">
                 <div class="time"><span>付款</span>{{item.tk_paid_time}}</div>
-                <div class="price">￥{{item.pub_share_pre_fee}}</div>
+                <div class="price">￥{{item.pub_share_pre_fee}}</div> <span>*{{item.item_num}}</span>
               </div>
               <div class="orderNum"><span>订单</span>{{item.trade_parent_id}}</div>
             </div>
@@ -167,6 +167,9 @@ export default {
             line-height: 30px;
             font-size: 24px;
             color: #f40;
+          }
+          span{
+            line-height: 30px;
           }
         }
         .orderNum {
