@@ -103,9 +103,8 @@ export default {
             });
             localStorage.token = res.token;
             localStorage.user = res.user;
-            //存储渠道ID
-            localStorage.channelId = 2736562433;
-
+            localStorage.channelId = res.channelId;//存储渠道ID
+            localStorage.id = res.id;//用户id
             this.$router.push({
               path: "/profile",
               name: "Profile",

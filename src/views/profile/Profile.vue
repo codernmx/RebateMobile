@@ -153,29 +153,34 @@ export default {
       this.$router.push({ path: "/order", name: "Order", });
     },
     toWithDrawal () {
-      // this.$router.push({
-      //   path: "/withDrawal", name: "WithDrawal", params: {
-      //     withDrawal: this.expect
-      //   }
-      // });
-      this.$confirm('亲，您需绑定支付宝才能提现哦', '温馨提示', {
-        customClass: 'confirmBox',
-        confirmButtonText: '好的马上去',
-        cancelButtonText: '下次一定',
-        type: 'warning',
-        center: true
-      }).then(() => {
+
+      const isBound = localStorage.getItem('isBound')
+      if (!isBound) {
+        this.$confirm('亲，您需绑定支付宝才能提现哦', '温馨提示', {
+          customClass: 'confirmBox',
+          confirmButtonText: '好的马上去',
+          cancelButtonText: '下次一定',
+          type: 'warning',
+          center: true
+        }).then(() => {
+          this.$router.push({
+            path: "/bound", name: "Bound", query: {
+              user: localStorage.getItem('user')
+            }
+          });
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });
+        });
+      } else {
         this.$router.push({
-          path: "/bound", name: "Bound", query: {
-            user: localStorage.getItem('user')
+          path: "/withDrawal", name: "WithDrawal", params: {
+            withDrawal: this.expect
           }
         });
-      }).catch(() => {
-        // this.$message({
-        //   type: 'info',
-        //   message: '已取消删除'
-        // });
-      });
+      }
     }
   },
 };

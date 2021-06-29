@@ -67,8 +67,12 @@ export default {
       this.$router.go(-1)
     },
     submit () {
-      this.$message.success('请等待审核')
-      this.money = ''
+      if (this.money <= this.actual && this.money) {
+        this.$message.success('请等待审核')
+        this.money = ''
+      } else {
+        this.$message.error('请正确输入提现金额！')
+      }
     }
 
   },
@@ -90,11 +94,10 @@ export default {
     width: 100px;
     text-align: justify;
   }
-  .right{
+  .right {
     flex: 1;
     display: flex;
     justify-content: space-between;
-    
   }
 }
 p {

@@ -23,12 +23,15 @@
         style="width:150px"
         type="primary"
         round
+        :loading="loading"
+        @click="submit"
       >立即绑定</el-button>
     </div>
   </div>
 </template>
 
 <script>
+import * as api from "../../network/api";
 export default {
   name: 'Bound',
 
@@ -38,8 +41,9 @@ export default {
 
   data () {
     return {
-      name:'',
-      account:'',
+      name: '',
+      account: '',
+      loading: false,
 
     };
   },
@@ -49,6 +53,37 @@ export default {
   },
 
   methods: {
+    submit () {
+      if (this.account && this.name) {
+        this.loading = true
+        setTimeout(() => {
+          api.post('/tbk/bound/account', {
+            account: this.account,
+            name: this.name,
+            id: localStorage.getItem('id')
+          })
+            .then((res) => {
+              console.log(res)
+              this.$message.success(res.msg);
+              this.loading = false
+
+              //后期优化修改
+              localStorage.isBound = true;
+              this.$router.push({ path: "/profile", name: "Profile", });
+            })
+            .catch((err) => {
+              this.$message.error(err);
+              this.loading = false
+            });
+        }, 2000)
+      } else {
+        this.$message({
+          message: '请填写所有信息在提交哦！',
+          type:'error',
+          center: true
+        });
+      }
+    }
 
   },
 };
