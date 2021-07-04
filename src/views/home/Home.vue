@@ -3,43 +3,53 @@
     <div class="nav">
       <div class="el-icon-arrow-left fz-xl"></div>
       <div class="diary">写日记</div>
-      <div class="el-icon-circle-plus-outline add_diary"
-           @click="write_diary"></div>
+      <div
+        class="el-icon-circle-plus-outline add_diary"
+        @click="write_diary"
+      ></div>
     </div>
-    <vue-particles color="#FF5777"
-                   :particleOpacity="0.6"
-                   :particlesNumber="80"
-                   shapeType="circle"
-                   :particleSize="4"
-                   linesColor="#FF5777"
-                   :linesWidth="1"
-                   :lineLinked="true"
-                   :lineOpacity="0.4"
-                   :linesDistance="130"
-                   :moveSpeed="2"
-                   :hoverEffect="true"
-                   hoverMode="grab"
-                   :clickEffect="true"
-                   clickMode="push"
-                   class="bg">
+    <vue-particles
+      color="#FF5777"
+      :particleOpacity="0.6"
+      :particlesNumber="80"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#FF5777"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="130"
+      :moveSpeed="2"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="true"
+      clickMode="push"
+      class="bg"
+    >
     </vue-particles>
 
-    <div class="content_box"
-         v-loading="loading">
+    <div
+      class="content_box"
+      v-loading="loading"
+    >
 
-      <el-input v-model="search"
-                placeholder="请输入内容"
-                suffix-icon='el-icon-search'
-                @change='search_diary'></el-input>
+      <el-input
+        v-model="search"
+        placeholder="请输入内容"
+        suffix-icon='el-icon-search'
+        @change='search_diary'
+      ></el-input>
 
-      <div v-for="item in diary_list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-           :key="item.id"
-           class="diary_box"
-           @click="to_details(item)">
+      <div
+        v-for="item in diary_list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+        :key="item.id"
+        class="diary_box"
+        @click="to_details(item)"
+      >
         <!-- <div class="titleImg">
           <img :src="item.IMG" alt="" class="diary_img" /> -->
-          <p class="title">{{ item.TITLE }}</p>
-          <!-- <div></div> -->
+        <p class="title">{{ item.TITLE }}</p>
+        <!-- <div></div> -->
         <!-- </div> -->
         <!-- <p class="time cen">{{ item.CREATE_TIME }}</p> -->
         <div class="content">
@@ -49,8 +59,14 @@
         </div>
         <p class="cen mt author">发布者：{{item.AUTHOR}} <span class="el-icon-view browse"></span> <span>浏览量：{{item.BROWSE}}</span> <span>时间：{{item.CREATE_TIME | createTime }}</span></p>
       </div>
-      <div class="empty" v-if="diary_list.length ==0">
-        <img src="../../assets/img/home/empty.png" alt="">
+      <div
+        class="empty"
+        v-if="diary_list.length ==0"
+      >
+        <img
+          src="../../assets/img/home/empty.png"
+          alt=""
+        >
         <p>您暂时没有相关日记信息哦，请添加日记！</p>
       </div>
 
@@ -58,28 +74,40 @@
                                layout="prev, pager, next"
                                :total="diary_list.length">
                 </el-pagination> -->
-      <el-pagination background
-                     class="cen"
-                     hide-on-single-page
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :pager-count="5"
-                     :page-size="pagesize"
-                     :total="diary_list.length"
-                     layout="prev, pager, next,jumper">
+      <el-pagination
+        background
+        class="cen"
+        hide-on-single-page
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :pager-count="5"
+        :page-size="pagesize"
+        :total="diary_list.length"
+        layout="prev, pager, next,jumper"
+      >
       </el-pagination>
       <div class="some_logo">
-        <img src="../../assets/img/home/web.png"
-             alt="">
-        <img src="../../assets/img/home/qq.png"
-             alt="">
-        <img src="../../assets/img/home/csdn.png"
-             alt="">
-        <img src="../../assets/img/home/github.png"
-             alt="">
-        <img src="../../assets/img/home/wechat.png"
-             alt="">
+        <img
+          src="../../assets/img/home/web.png"
+          alt=""
+        >
+        <img
+          src="../../assets/img/home/qq.png"
+          alt=""
+        >
+        <img
+          src="../../assets/img/home/csdn.png"
+          alt=""
+        >
+        <img
+          src="../../assets/img/home/github.png"
+          alt=""
+        >
+        <img
+          src="../../assets/img/home/wechat.png"
+          alt=""
+        >
       </div>
       <p class="cen copyright">Copyright © 2020 By Erha</p>
       <div style="margin-bottom: 64px"></div>
@@ -113,6 +141,7 @@ export default {
     this.get_diary_async({
       user: user
     })
+    this.init()
   },
   methods: {
     //获取查询数据
@@ -149,6 +178,18 @@ export default {
     },
     //初始化数据，请求默认数据
     init () {
+      const code = location.href.slice(28, 59)
+      //获取token
+      api.get('/tblm/get/access/token', {
+        // code: this.$route.query.code
+        code
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
     },
     //跳转到发表日记
     write_diary () {
@@ -186,12 +227,12 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
 }
-.empty{
+.empty {
   height: 65vh;
   text-align: center;
   font-size: 13px;
 }
-.empty img{
+.empty img {
   width: 100%;
 }
 /* @media screen and (max-width: 700px) {

@@ -20,10 +20,24 @@
       class="bg"
     >
     </vue-particles>
-    <div class="nav navTop">
+    <!-- <div class="nav navTop">
       <div class="el-icon-arrow-left fz-xl"></div>
       <div class="diary">首页</div>
       <div class="fz-xl el-icon-s-tools"></div>
+    </div> -->
+    <div class="search">
+      <el-input
+        v-model="allValue.searchValue"
+        placeholder="请输入搜索内容"
+        class="input-with-select"
+      >
+        <el-button
+          slot="append"
+          round
+          icon="el-icon-search"
+          @click="submitSearch"
+        ></el-button>
+      </el-input>
     </div>
 
     <div
@@ -31,6 +45,10 @@
       @click="identifyDialog = true"
     >点击识别淘口令</div>
     <div style="overflow: auto;height:1200px">
+
+      <!-- 搜索条 -->
+
+      <!-- 搜索条   结束 -->
       <!-- 轮播图 -->
       <el-carousel
         :interval="2000"
@@ -90,21 +108,6 @@
         </div>
       </div>
       <!-- 商品循环体  结束-->
-      <!-- <el-pagination
-        background
-        class="pageCenter"
-        hide-on-single-page
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :pager-count="5"
-        :page-size="pagesize"
-        :total="200"
-        layout="prev, pager, next"
-      >
-      </el-pagination> -->
-      <!-- layout="prev, pager, next,jumper" -->
-
     </div>
     <div
       class="loading"
@@ -199,6 +202,9 @@ export default {
   components: { ClipBoard },
   data () {
     return {
+      allValue: {
+        searchValue: '',
+      },
       count: 1,
       loading: false,
       taoCarouseList: [],//存轮播图
@@ -248,6 +254,18 @@ export default {
       setTimeout(() => {
         this.loading = false
       }, 3000)
+    },
+    //搜索提交
+    submitSearch () {
+      api.post('/tbk/search/keyWords', {
+        keyWords:this.allValue.searchValue
+      }).then((res) => {
+        console.log(res)
+        this.list = res.data
+      })
+        .catch((err) => {
+          this.$message.error(err);
+        });
     },
     buyNow (goodsId) {
       this.afterIdentifyDialog = false
@@ -365,6 +383,9 @@ export default {
   .navTop {
     margin-top: 50px;
   }
+  .search {
+    margin-top: 50px;
+  }
   .identify {
     width: 100%;
     height: 50px;
@@ -419,11 +440,14 @@ export default {
     }
   }
 }
-.guide{
+.guide {
   display: flex;
   justify-content: space-between;
   padding: 15px 15px;
-  .tb,.jd,.wm,.pdd{
+  .tb,
+  .jd,
+  .wm,
+  .pdd {
     height: 50px;
     width: 50px;
     text-align: center;

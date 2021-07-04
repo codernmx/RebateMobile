@@ -40,6 +40,16 @@ module.exports = {
         // }
 
       },
+      //淘宝联盟
+      '^/tblm': {
+        target: 'http://82.156.117.112:3031/',
+        ws: true,
+        changOrigin: true,
+        // pathRewrite: {
+        //         '^/api': '',
+        // }
+
+      },
       '^/item_detail': {
         target: 'http://v2.api.haodanku.com',
         ws: true,

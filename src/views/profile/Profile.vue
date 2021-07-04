@@ -135,6 +135,31 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
+
+      //淘宝联盟接口
+      api.get('/tblm/create')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+
+      console.log(location.href)
+      console.log(location.href.slice(28,59))
+      const code = location.href.slice(28,59)
+      //获取token
+      api.get('/tblm/get/access/token', {
+        // code: this.$route.query.code
+        code
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
     },
     // 跳转到相册
     toPhotoList () {
