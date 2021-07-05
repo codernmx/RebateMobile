@@ -27,8 +27,8 @@ Vue.use(VueRouter)
 // 2.创建router
 const routes = [
   {
-    path: '',
-    redirect: '/home'
+    path: '/',
+    redirect: '/profile'
   },
   {
     path: '/home',

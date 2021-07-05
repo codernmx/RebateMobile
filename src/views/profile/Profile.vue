@@ -87,6 +87,12 @@
           </div>
           <span class="el-icon-arrow-right"></span>
         </div>
+
+        <div style="text-align:center;margin-top:30px">
+          <a :href="getSessionBaseUrl + getSessionBackUrl">
+            <el-button type="danger">立即授权</el-button>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -100,15 +106,19 @@ export default {
   components: {},
   data () {
     return {
+      getSessionBaseUrl:'https://oauth.taobao.com/authorize?spm=a219a.15212433.0.0.3617669aPjka6j&response_type=code&client_id=30205726&state=1212&view=wap&redirect_uri=',
+      // getSessionBackUrl:'http://localhost:8080/#/profile',
+      getSessionBackUrl:'https://nmxgzs.cn/#/profile',
       user: null,
       expect: null,
       info: {
         user: null,
       },
-    };
+    }
   },
   created () {
     this.init();
+    this.GetQueryJson(location.href)
   },
   filters: {
     parseInt: function (value) {
@@ -120,6 +130,23 @@ export default {
     }
   },
   methods: {
+    // 获取url中的code
+    GetQueryJson (url) {
+      // let url = url; // 获取当前浏览器的URL
+      let arr = []; // 存储参数的数组
+      let res = {}; // 存储最终JSON结果对象
+      arr = url.split('?')[1].split('&'); // 获取浏览器地址栏中的参数
+      for (let i = 0; i < arr.length; i++) { // 遍历参数
+        if (arr[i].indexOf('=') != -1) { // 如果参数中有值
+          let str = arr[i].split('=');
+          res[str[0]] = str[1];
+        } else { // 如果参数中无值
+          res[arr[i]] = '';
+        }
+      }
+      console.log(res)
+      this.getSession(res.code)
+    },
     //初始化数据，请求默认数据
     init () {
       this.user = localStorage.getItem('user')
@@ -135,27 +162,25 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-
-      //淘宝联盟接口
-      api.get('/tblm/create')
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          this.$message.error(err);
-        });
-
-      console.log(location.href)
-      console.log(location.href.slice(28,59))
-      const code = location.href.slice(28,59)
-      //获取token
+    },
+    getSession (code) {
+      //通过code 获取session
       api.get('/tblm/get/access/token', {
-        // code: this.$route.query.code
         code
       })
         .then((res) => {
-          console.log(res)
+          const session = JSON.parse(res.token_result).refresh_token
+          let _this = this
+          api.get('/tblm/create', {
+            session
+          })
+            .then((res) => {
+              console.log(res)
+              _this.$message.success(res.data.account_name + res.data.desc + res.data.relation_id);
+            })
+            .catch((err) => {
+              this.$message.error(err);
+            });
         })
         .catch((err) => {
           this.$message.error(err);
