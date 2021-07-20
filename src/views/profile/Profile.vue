@@ -106,6 +106,7 @@ export default {
   components: {},
   data () {
     return {
+      
       getSessionBaseUrl:'https://oauth.taobao.com/authorize?spm=a219a.15212433.0.0.3617669aPjka6j&response_type=code&client_id=30205726&state=1212&view=wap&redirect_uri=',
       // getSessionBackUrl:'http://localhost:8080/#/profile',
       getSessionBackUrl:'https://nmxgzs.cn/#/profile',
