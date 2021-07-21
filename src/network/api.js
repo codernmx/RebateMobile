@@ -34,9 +34,9 @@ export const get_diary = function (user) {
   })
 };
 // 获取订单列表
-export const getOrderList = function (user) {
+export const getOrderList = function (channelId) {
   return axios.post('/api/get/order', {
-    user
+    channelId
   }).then(res => {
     return res.data
   }).catch(err => {

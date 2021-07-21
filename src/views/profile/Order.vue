@@ -102,7 +102,8 @@ export default {
       // console.log(tab, event);
     },
     init () {//默认展示的数据
-      getOrderList() //获取订单
+      const channelId = localStorage.getItem('channelId')
+      getOrderList(channelId) //获取订单
         .then((res) => {
           console.log(res)
           this.orderList = res.DATA
@@ -168,7 +169,7 @@ export default {
             font-size: 24px;
             color: #f40;
           }
-          span{
+          span {
             line-height: 30px;
           }
         }

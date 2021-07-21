@@ -106,9 +106,8 @@ export default {
   components: {},
   data () {
     return {
-      
-      getSessionBaseUrl:'https://oauth.taobao.com/authorize?spm=a219a.15212433.0.0.3617669aPjka6j&response_type=code&client_id=30205726&state=1212&view=wap&redirect_uri=',
-      // getSessionBackUrl:'http://localhost:8080/#/profile',
+      getSessionBaseUrl: 'https://oauth.taobao.com/authorize?spm=a219a.15212433.0.0.3617669aPjka6j&response_type=code&client_id=30205726&state=1212&view=wap&redirect_uri=',
+      // getSessionBackUrl: 'http://localhost:8080/#/profile',
       getSessionBackUrl:'https://nmxgzs.cn/#/profile',
       user: null,
       expect: null,
@@ -146,12 +145,14 @@ export default {
         }
       }
       console.log(res)
-      this.getSession(res.code)
+      if (res.code) {
+        this.getSession(res.code)
+      }
     },
     //初始化数据，请求默认数据
     init () {
-      this.user = localStorage.getItem('user')
-      api.getOrderList() //获取所有订单
+      const channelId = localStorage.getItem('channelId')
+      api.getOrderList(channelId) //获取所有订单
         .then((res) => {
           console.log(res)
           let num = null
@@ -172,12 +173,38 @@ export default {
         .then((res) => {
           const session = JSON.parse(res.token_result).refresh_token
           let _this = this
+          //根据session 得到用户的渠道ID
           api.get('/tblm/create', {
             session
           })
-            .then((res) => {
-              console.log(res)
-              _this.$message.success(res.data.account_name + res.data.desc + res.data.relation_id);
+            .then((resu) => {
+              console.log(resu)
+              //提示信息
+              if (resu.code == 15) {
+                this.$message.error(resu.sub_msg);
+              } else if (resu.data.desc == '重复绑定粉丝' || resu.data.desc == '重复绑定渠道') {
+                this.$message.error(resu.data.desc);
+              } else {
+                _this.$message.success(resu.data.desc);
+              }
+              //请求接口将渠道id存储到用户表
+              api.post('/tbk/bound/channelId', {
+                channelId: resu.data.relation_id,
+                user: localStorage.getItem('user'),
+                id: localStorage.getItem('id'),
+              })
+                .then((result) => {
+                  console.log(result)
+                  if (result.code == 200) {
+                    setTimeout(() => {
+                      this.$message.success('绑定账号更新成功');
+                    }, 1000)
+                    //更新本地存储的用户、id、渠道id
+                    localStorage.id = result.data.id;
+                    localStorage.user = result.data.user;
+                    localStorage.channelId = result.data.channelId;//存储渠道ID
+                  }
+                })
             })
             .catch((err) => {
               this.$message.error(err);
