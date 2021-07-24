@@ -92,34 +92,64 @@ export default {
     submit () {
       this.loginLoading = true
       //获取token
-      api.login(this.user, this.password)
-        .then((res) => {
-          console.log(res);
+
+      // api.login(this.user, this.password)
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.loginLoading = false
+      //     if (res.token) {
+      //       this.$message.success({
+      //         message: '登陆成功',
+      //         center: true
+      //       });
+      //       localStorage.token = res.token;
+      //       localStorage.user = res.user;
+      //       localStorage.channelId = res.channelId;//存储渠道ID
+      //       localStorage.id = res.id;//用户id
+      //       this.$router.push({
+      //         path: "/profile",
+      //         name: "Profile",
+      //       });
+      //     } else {
+      //       this.loginLoading = false
+      //       this.$message.error({
+      //         message: res.msg,
+      //         center: true
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+
+      api.post('/tbk/login', {
+        user: this.user,
+        password: this.password,
+      }).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          this.$message.success({
+            message: '登陆成功',
+            center: true
+          });
+          console.log(res.results[0])
+          localStorage.token = res.token;//token
+          localStorage.user = res.results[0].USER;//用户
+          localStorage.channelId = res.results[0].CHANNELID;//存储渠道ID
+          localStorage.id = res.results[0].ID;//用户id
+          localStorage.account = res.results[0].ACCOUNT;//账户用来判断是否绑定账号
+          this.$router.push({
+            path: "/profile",
+            name: "Profile",
+          });
+        } else {
           this.loginLoading = false
-          if (res.token) {
-            this.$message.success({
-              message: '登陆成功',
-              center: true
-            });
-            localStorage.token = res.token;
-            localStorage.user = res.user;
-            localStorage.channelId = res.channelId;//存储渠道ID
-            localStorage.id = res.id;//用户id
-            this.$router.push({
-              path: "/profile",
-              name: "Profile",
-            });
-          } else {
-            this.loginLoading = false
-            this.$message.error({
-              message: res.msg,
-              center: true
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+          this.$message.error({
+            message: res.msg,
+            center: true
+          });
+        }
+      })
     },
   },
 };

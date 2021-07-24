@@ -88,7 +88,10 @@
           <span class="el-icon-arrow-right"></span>
         </div>
 
-        <div style="text-align:center;margin-top:30px">
+        <div
+          style="text-align:center;margin-top:30px"
+          v-if="isShowAuthorization"
+        >
           <a :href="getSessionBaseUrl + getSessionBackUrl">
             <el-button type="danger">立即授权</el-button>
           </a>
@@ -106,14 +109,12 @@ export default {
   components: {},
   data () {
     return {
+      isShowAuthorization: true,//是否展示授权
       getSessionBaseUrl: 'https://oauth.taobao.com/authorize?spm=a219a.15212433.0.0.3617669aPjka6j&response_type=code&client_id=30205726&state=1212&view=wap&redirect_uri=',
       // getSessionBackUrl: 'http://localhost:8080/#/profile',
-      getSessionBackUrl:'https://nmxgzs.cn/#/profile',
+      getSessionBackUrl: 'https://nmxgzs.cn/#/profile',
       user: null,
       expect: null,
-      info: {
-        user: null,
-      },
     }
   },
   created () {
@@ -151,6 +152,7 @@ export default {
     },
     //初始化数据，请求默认数据
     init () {
+      this.user = localStorage.getItem('user')
       const channelId = localStorage.getItem('channelId')
       api.getOrderList(channelId) //获取所有订单
         .then((res) => {
@@ -164,6 +166,13 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
+      if (localStorage.getItem('channelId') == 'null') {
+        this.isShowAuthorization = true
+      } else {
+        this.isShowAuthorization = false
+      }
+      console.log(this.isShowAuthorization)
     },
     getSession (code) {
       //通过code 获取session
@@ -231,8 +240,8 @@ export default {
       this.$router.push({ path: "/order", name: "Order", });
     },
     toWithDrawal () {
-
-      const isBound = localStorage.getItem('isBound')
+      //如果没有account就是没有绑定账号
+      const isBound = localStorage.getItem('account')
       if (!isBound) {
         this.$confirm('亲，您需绑定支付宝才能提现哦', '温馨提示', {
           customClass: 'confirmBox',

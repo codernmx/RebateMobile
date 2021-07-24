@@ -114,7 +114,7 @@ const routes = [
     name: 'Profile',
     component: Profile,
     meta: {
-      noRefresh: true
+      noRefresh: false
     }
   },
   {
