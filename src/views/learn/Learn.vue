@@ -84,7 +84,6 @@
           ></div>
         </div>
       </div>
-      
 
       <div
         v-for="item in list"
@@ -121,7 +120,7 @@
 
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 import ClipBoard from "../clipboard/index.vue";
 export default {
   name: "Learn",

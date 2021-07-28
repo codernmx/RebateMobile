@@ -9,9 +9,12 @@
                           src="http://e.98kdm.cn/upload/16166705161616670516.jpg"></el-image> -->
     <!-- 写背景图片加载的 -->
     <div class="nav">
-      <div class="el-icon-arrow-left fz-xl" @click="back"></div>
+      <div
+        class="el-icon-arrow-left fz-xl"
+        @click="back"
+      ></div>
       <div class="diary">设置</div>
-      <div class="el-icon-star-off fz-xl" ></div>
+      <div class="el-icon-star-off fz-xl"></div>
     </div>
     <div class="check_box">
       <div>声音</div>
@@ -91,7 +94,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 export default {
   name: "Seeting",
   components: {},
@@ -122,7 +125,7 @@ export default {
       //         });
       //读取localStorage
     },
-    back(){
+    back () {
       this.$router.go(-1)
       console.log(this.$router)
     },

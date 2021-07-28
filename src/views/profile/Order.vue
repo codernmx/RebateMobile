@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { getOrderList } from "../../network/api";
+import { getOrderList } from "../../api/api";
 export default {
   name: 'Order',
   components: {},

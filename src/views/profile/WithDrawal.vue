@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { } from "../../network/api";
+import { } from "../../api/api";
 export default {
   name: 'WithDrawal',
 

@@ -1,7 +1,10 @@
 <template>
   <div id="tools">
     <div class="nav">
-      <div class="el-icon-arrow-left fz-xl" @click="back"></div>
+      <div
+        class="el-icon-arrow-left fz-xl"
+        @click="back"
+      ></div>
       <div class="diary">个人</div>
       <div class="el-icon-refresh fz-xl"></div>
     </div>
@@ -29,7 +32,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 export default {
   name: "Tools",
   components: {},
@@ -46,7 +49,7 @@ export default {
     init () {
       //读取localStorage
     },
-    back(){
+    back () {
       this.$router.go(-1)
     }
   },
@@ -57,7 +60,7 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
 }
-.coderLink{
+.coderLink {
   margin-top: 30px;
   text-align: center;
   line-height: 32px;

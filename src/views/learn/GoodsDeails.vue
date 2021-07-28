@@ -115,7 +115,7 @@
 
 <script>
 import ClipBoard from "../clipboard/index.vue";
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 export default {
   name: 'Goodsdeails',
   components: {
@@ -231,7 +231,7 @@ export default {
   .userImgBox {
     display: flex;
     justify-content: flex-start;
-    div{
+    div {
       margin-left: 5px;
     }
   }

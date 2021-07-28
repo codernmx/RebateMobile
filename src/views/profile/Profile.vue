@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 export default {
   name: "Profile",
   components: {},

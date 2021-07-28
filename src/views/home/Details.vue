@@ -1,7 +1,9 @@
 <template>
   <div id="details">
-    <el-breadcrumb class="mt"
-                   separator-class="el-icon-arrow-right">
+    <el-breadcrumb
+      class="mt"
+      separator-class="el-icon-arrow-right"
+    >
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>日记详情</el-breadcrumb-item>
     </el-breadcrumb>
@@ -11,32 +13,44 @@
       <span class="browse">浏览量：{{diary_details.BROWSE}}</span>
     </p>
     <p class="cen"> </p>
-    <p class="mt content"
-       v-for="item in diary_details.CONTENT.split('。')"
-       :key="item">{{ item }}</p>
+    <p
+      class="mt content"
+      v-for="item in diary_details.CONTENT.split('。')"
+      :key="item"
+    >{{ item }}</p>
     <!-- <img :src="diary_details.IMG"
                      alt=""
                      class="img" /> -->
 
-    <el-image class="img"
-              @load="img_load"
-              :src="diary_details.IMG"
-              lazy></el-image>
+    <el-image
+      class="img"
+      @load="img_load"
+      :src="diary_details.IMG"
+      lazy
+    ></el-image>
 
     <div class="loading_box">
-      <span class="el-icon-loading loading"
-            v-if="show_loading"></span>
+      <span
+        class="el-icon-loading loading"
+        v-if="show_loading"
+      ></span>
     </div>
     <div class="comment_box">
-      <div class="el-icon-s-promotion"
-           :class="{cative:1===show}"
-           @click="show =1">分享</div>
-      <div class="el-icon-s-comment"
-           :class="{cative:2===show}"
-           @click="show =2">评论</div>
-      <div class="el-icon-star-off"
-           :class="{cative:3===show}"
-           @click="show =3">点赞</div>
+      <div
+        class="el-icon-s-promotion"
+        :class="{cative:1===show}"
+        @click="show =1"
+      >分享</div>
+      <div
+        class="el-icon-s-comment"
+        :class="{cative:2===show}"
+        @click="show =2"
+      >评论</div>
+      <div
+        class="el-icon-star-off"
+        :class="{cative:3===show}"
+        @click="show =3"
+      >点赞</div>
 
     </div>
     <p class="cen mb copyright">Copyright © 2020 By Erha</p>
@@ -46,7 +60,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 
 
 export default {

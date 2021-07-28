@@ -116,8 +116,8 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
-import { get_diary_async } from '../../network/api'
+import * as api from "../../api/api";
+import { get_diary_async } from '../../api/api'
 export default {
   name: "Home",
   components: {},

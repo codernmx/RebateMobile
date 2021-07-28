@@ -44,16 +44,15 @@ export default {
 <style lang="less" scoped>
 .clipBox {
   text-align: center;
-  .fz{
+  .fz {
     margin-bottom: 15px;
   }
   .tkl {
-    
     line-height: 20px;
     width: 160px;
     margin: 0 auto;
     background: #fff5f7;
-    border: 1px dashed #FF816E;
+    border: 1px dashed #ff816e;
     margin-bottom: 15px;
     margin-top: 10px;
   }

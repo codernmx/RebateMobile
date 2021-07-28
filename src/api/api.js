@@ -106,7 +106,6 @@ export const diary_search = function (search) {
 
 
 
-
 export const shopList = function () {
   return axios.get('/DataApi/index?AppKey=365egvspsx&type=6').then(res => {
     console.log(res);
@@ -173,15 +172,6 @@ export const getGoodsLists = function (id) {
 };
 
 
-
-// export const tkl = function (url) {
-// 	return axios.get('/tbk/create?url='+url).then(res => {
-// 		console.log(res);
-// 		return res.data
-// 	}).catch(err => {
-// 		console.log("api登录错误", err)
-// 	})
-// };
 
 
 /**

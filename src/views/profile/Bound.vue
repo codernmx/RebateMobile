@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 export default {
   name: 'Bound',
 
@@ -79,7 +79,7 @@ export default {
       } else {
         this.$message({
           message: '请填写所有信息在提交哦！',
-          type:'error',
+          type: 'error',
           center: true
         });
       }

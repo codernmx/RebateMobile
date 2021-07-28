@@ -195,7 +195,7 @@
 </template>
 
 <script>
-import * as api from "../../network/api";
+import * as api from "../../api/api";
 import ClipBoard from "../clipboard/index.vue";
 export default {
   name: "Shop",
@@ -258,7 +258,7 @@ export default {
     //搜索提交
     submitSearch () {
       api.post('/tbk/search/keyWords', {
-        keyWords:this.allValue.searchValue
+        keyWords: this.allValue.searchValue
       }).then((res) => {
         console.log(res)
         this.list = res.data
