@@ -25,7 +25,7 @@
         src="~assets/img/tabbar/category_active.svg"
         alt=""
       />
-      <div slot="item-text">导航</div>
+      <div slot="item-text">精选</div>
     </tab-bar-item>
 
     <tab-bar-item path="/shop">

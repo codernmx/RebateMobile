@@ -1,13 +1,5 @@
 <template>
   <div id="message">
-    <div class="nav">
-      <div
-        class="fz-xl"
-        @click="back"
-      ></div>
-      <div class="diary">9.9包邮</div>
-      <div class="fz-xl"></div>
-    </div>
     <el-divider></el-divider>
     <div
       class="bigBox"
@@ -18,13 +10,14 @@
         :key="index"
         class="itemBox"
       >
-        <img
+
+        <el-image
           :src="item.mainPic"
-          alt=""
-          width="105"
-          height="105"
+          lazy
           class="itemImg"
-        >
+          style="width: 105px; height: 105px"
+        ></el-image>
+
         <div class="itemRight">
           <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
           <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>

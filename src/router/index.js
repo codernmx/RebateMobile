@@ -1,26 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-const Home = () => import('../views/home/Home')
-const Details = () => import('../views/home/Details')
-const Write_diary = () => import('../views/home/Write_diary')
-const About = () => import('../views/about/About')
-const Learn = () => import('../views/learn/Learn')
-const Shop = () => import('../views/learn/Shop')
-const GoodsDeails = () => import('../views/learn/GoodsDeails')
-const Message = () => import('../views/message/Message')
-const Login = () => import('../views/login/Login')
-const Register = () => import('../views/login/Register')
-const Profile = () => import('../views/profile/Profile')
-const WithDrawal = () => import('../views/profile/WithDrawal')
-const Bound = () => import('../views/profile/Bound')
-const Order = () => import('../views/profile/Order')
-const Photo_list = () => import('../views/profile/Photo_list')
-const Setting = () => import('../views/profile/Setting')
-const Tools = () => import('../views/profile/Tools')
-const Nav = () => import('../views/nav/Nav')
-const NavDetails = () => import('../views/nav/NavDetails')
-
 // 1.安装插件
 Vue.use(VueRouter)
 
@@ -33,42 +12,42 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: () => import('../views/home/Home')
   },
   {
     path: '/nav',
     name: 'Nav',
-    component: Nav
+    component: () => import('../views/nav/Nav')
   },
   {
     path: '/navDetails',
     name: 'NavDetails',
-    component: NavDetails
+    component: () => import('../views/nav/NavDetails')
   },
   {
     path: '/details',
     name: 'Details',
-    component: Details
+    component: () => import('../views/home/Details')
   },
   {
     path: '/write_diary',
     name: 'Write_diary',
-    component: Write_diary
+    component: () => import('../views/home/Write_diary')
   },
   {
     path: '/about',
     name: 'About',
-    component: About
+    component: () => import('../views/about/About')
   },
   {
     path: '/learn',
     name: 'Learn',
-    component: Learn
+    component: () => import('../views/learn/Learn')
   },
   {
     path: '/shop',
     name: 'Shop',
-    component: Shop,
+    component: () => import('../views/learn/Shop'),
     meta: {
       noRefresh: true
     }
@@ -76,17 +55,17 @@ const routes = [
   {
     path: '/goodsDetails',
     name: 'GoodsDeails',
-    component: GoodsDeails
+    component: () => import('../views/learn/GoodsDeails')
   },
   {
     path: '/message',
     name: 'Message',
-    component: Message
+    component: () => import('../views/message/Message')
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: () => import('../views/login/Login'),
     meta: {
       keepAlive: true
     }
@@ -94,7 +73,7 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: Register,
+    component: () => import('../views/login/Register'),
     meta: {
       keepAlive: true
     }
@@ -102,17 +81,17 @@ const routes = [
   {
     path: '/withDrawal',
     name: 'WithDrawal',
-    component: WithDrawal
+    component: () => import('../views/profile/WithDrawal')
   },
   {
     path: '/bound',
     name: 'Bound',
-    component: Bound
+    component: () => import('../views/profile/Bound')
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile,
+    component: () => import('../views/profile/Profile'),
     meta: {
       noRefresh: false
     }
@@ -120,7 +99,7 @@ const routes = [
   {
     path: '/order',
     name: 'Order',
-    component: Order,
+    component: () => import('../views/profile/Order'),
     meta: {
       noRefresh: true
     }
@@ -128,17 +107,17 @@ const routes = [
   {
     path: '/setting',
     name: 'Setting',
-    component: Setting
+    component: () => import('../views/profile/Setting')
   },
   {
     path: '/photo_list',
     name: 'Photo_list',
-    component: Photo_list
+    component: () => import('../views/profile/Photo_list')
   },
   {
     path: '/tools',
     name: 'Tools',
-    component: Tools
+    component: () => import('../views/profile/Tools')
   }
 ]
 const router = new VueRouter({

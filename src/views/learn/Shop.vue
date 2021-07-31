@@ -61,6 +61,7 @@
           :key="index"
         >
           <el-image
+            lazy
             :src="item.topicImage"
             fit="fit"
           ></el-image>
@@ -89,13 +90,13 @@
           :key="index"
           class="itemBox"
         >
-          <img
+          <el-image
             :src="item.mainPic"
-            alt=""
-            width="105"
-            height="105"
+            lazy
             class="itemImg"
-          >
+            style="width: 105px; height: 105px"
+          ></el-image>
+
           <div class="itemRight">
             <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
             <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>

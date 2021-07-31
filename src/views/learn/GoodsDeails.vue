@@ -71,11 +71,13 @@
             :key="index"
           >
             <div class="itemTop">
-              <img
-                class="head"
+              <el-image
                 :src="item.headPicUrl"
-                alt=""
-              >
+                lazy
+                class="head"
+                style="width: 50px; height: 50px"
+              ></el-image>
+
               <div class="userNick">
                 <div>{{item.userNick}}</div>
                 <div>{{item.commentDate}}</div>
@@ -87,12 +89,11 @@
                 v-for="(itemImg,indexImg) in item.images"
                 :key="indexImg"
               >
-                <img
+                <el-image
                   :src="itemImg"
-                  alt=""
-                  width="50"
-                  height="50"
-                >
+                  lazy
+                  style="width: 50px; height: 50px"
+                ></el-image>
               </div>
             </div>
             <el-divider></el-divider>
