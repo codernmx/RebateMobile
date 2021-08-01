@@ -81,10 +81,11 @@ export default {
     init () {
       // console.log(this.$route.params.info);
       // console.log(this.$route.query.id);
-      this.diary_details = this.$route.params.info;
+      // this.diary_details = this.$route.params.info;//携带过来的参数页面刷新不会保留
       api.get_details(this.$route.query.id) //获取日记列表
         .then((res) => {
           console.log(res);
+          this.diary_details = res.DATA[0]
         })
         .catch((err) => {
           console.log(err);
@@ -123,7 +124,7 @@ export default {
   text-align: center;
 }
 .loading {
-  font-size: 80px;
+  font-size: 50px;
   color: #409eff;
 }
 .copyright {

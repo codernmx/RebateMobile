@@ -51,14 +51,17 @@
         <el-button
           type="danger"
           @click="buyNow(goodsId)"
+          round
+          icon="el-icon-share"
         >
-          分享赚{{((info.actualPrice *info.commissionRate)/100) | parseInt}}
+          分享赚{{((info.actualPrice *info.commissionRate)/100) | parseInt}}元
         </el-button>
         <el-button
           type="danger"
           @click="buyNow(goodsId)"
+          round
         >
-          购买返{{((info.actualPrice *info.commissionRate)/100) | parseInt}}
+          购买返{{((info.actualPrice *info.commissionRate)/100) | parseInt}}元
         </el-button>
       </div>
       <!-- 评论 -->
@@ -84,6 +87,7 @@
               </div>
             </div>
             <div>{{item.commentContent}}</div>
+            <!-- 评论图片 -->
             <div class="userImgBox">
               <div
                 v-for="(itemImg,indexImg) in item.images"
@@ -92,6 +96,8 @@
                 <el-image
                   :src="itemImg"
                   lazy
+                  :preview-src-list="previewList"
+                  @click="addPreviewList(item.images)"
                   style="width: 50px; height: 50px"
                 ></el-image>
               </div>
@@ -126,6 +132,7 @@ export default {
 
   data () {
     return {
+      previewList:[],//评论图片列表
       commentList: [],//商品评论
       goodsId: '',//全局goodsId
       tklDialog: {//淘口令
@@ -177,6 +184,11 @@ export default {
       }).catch((err) => {
         this.$message.error(err);
       });
+    },
+    //添加到预览图片的列表
+    addPreviewList(srcList){
+      // console.log(srcList)
+      this.previewList = srcList
     },
     buyNow (goodsId) {//点击购买
       this.afterIdentifyDialog = false

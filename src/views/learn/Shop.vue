@@ -61,7 +61,6 @@
           :key="index"
         >
           <el-image
-            lazy
             :src="item.topicImage"
             fit="fit"
           ></el-image>
@@ -78,12 +77,24 @@
       </div>
       <!-- 中间部分 结束 -->
 
+      <!-- 加载动画 -->
+      <div
+        class="loadingBox"
+        v-loading="listLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+      >
+      </div>
+
       <!-- 商品循环体 -->
       <div
         v-if="list.length>1"
         class="bigBox"
         v-infinite-scroll="load"
         infinite-scroll-distance="10px"
+        v-loading="listLoading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
       >
         <div
           v-for="(item,index) in list"
@@ -91,18 +102,17 @@
           class="itemBox"
         >
           <el-image
-            :src="item.mainPic"
-            lazy
+            :src="item.mainPic || item.pict_url"
             class="itemImg"
-            style="width: 105px; height: 105px"
+            style="width: 105px; height: 105px;position:static"
           ></el-image>
 
           <div class="itemRight">
-            <div @click="toDetails(item.goodsId)">{{item.dtitle}}</div>
-            <div class="price"> <span class="lower">券：{{item.couponPrice}}元</span> 券后：￥<span>{{item.actualPrice}}</span></div>
-            <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 | parseInt}} <div
+            <div @click="toDetails(item.goodsId || item.item_id)">{{item.dtitle || item.short_title}}</div>
+            <div class="price"> <span class="lower">券：{{item.couponPrice || item.zk_final_price}}元</span> 券后：￥<span>{{item.actualPrice || item.reserve_price}}</span></div>
+            <div class="buyButton">预估收益：{{(item.actualPrice * item.commissionRate)/100 || (item.reserve_price * item.commission_rate/100)  | parseInt}} <div
                 style="color:white"
-                @click="tkl(item.goodsId)"
+                @click="tkl(item.goodsId || item.item_id)"
               >立即抢</div>
             </div>
           </div>
@@ -197,12 +207,16 @@
 
 <script>
 import * as api from "../../api/api";
+
 import ClipBoard from "../clipboard/index.vue";
+import Snow from "components/common/snowbg/Snow"//导入飘雪花的背景
+
 export default {
   name: "Shop",
   components: { ClipBoard },
   data () {
     return {
+      listLoading: false,//列表加载动画
       allValue: {
         searchValue: '',
       },
@@ -258,11 +272,13 @@ export default {
     },
     //搜索提交
     submitSearch () {
+      this.listLoading = true
       api.post('/tbk/search/keyWords', {
         keyWords: this.allValue.searchValue
       }).then((res) => {
         console.log(res)
         this.list = res.data
+        this.listLoading = false
       })
         .catch((err) => {
           this.$message.error(err);
@@ -297,9 +313,19 @@ export default {
       console.log('currentPage', currentPage)
       this.getShopList(currentPage)
     },
+    // 解析按钮
     identifyDialogSub () {
       this.identifyLoading = true
-      api.tklParsing(this.identifyDialogInput)//请求解析接口
+      //截取[图片]
+      const strNum = this.identifyDialogInput.search('[图片]')
+      let content = null
+      if (strNum != '-1') {
+        content = this.identifyDialogInput.slice(0, strNum - 1)
+      } else {
+        content = this.identifyDialogInput
+      }
+
+      api.tklParsing(content)//请求解析接口
         .then((res) => {
           if (res.code == '0') {
             this.identifyDialogInput = ''//清空输入框
@@ -348,10 +374,12 @@ export default {
         });
     },
     getShopList (pageId) {
+      this.listLoading = true
       api.getGoodsLists(pageId)
         .then((res) => {
           console.log(res)
           this.list = [...this.list, ...res.data]
+          this.listLoading = false
         })
         .catch((err) => {
           this.$message.error(err);
@@ -440,6 +468,10 @@ export default {
       text-decoration: line-through;
     }
   }
+}
+.loadingBox {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .guide {
   display: flex;

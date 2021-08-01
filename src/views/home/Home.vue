@@ -32,16 +32,16 @@
       class="content_box"
       v-loading="loading"
     >
-
       <el-input
         v-model="search"
         placeholder="请输入内容"
         suffix-icon='el-icon-search'
         @change='search_diary'
       ></el-input>
+      <!-- v-for="item in diary_list.slice((currentPage-1)*pagesize,currentPage*pagesize)" -->
 
       <div
-        v-for="item in diary_list.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+        v-for="item in diary_list"
         :key="item.id"
         class="diary_box"
         @click="to_details(item)"
@@ -58,6 +58,7 @@
           </p>
         </div>
         <p class="cen mt author">发布者：{{item.AUTHOR}} <span class="el-icon-view browse"></span> <span>浏览量：{{item.BROWSE}}</span> <span>时间：{{item.CREATE_TIME | createTime }}</span></p>
+        <el-divider></el-divider>
       </div>
       <div
         class="empty"
@@ -70,11 +71,7 @@
         <p>您暂时没有相关日记信息哦，请添加日记！</p>
       </div>
 
-      <!-- <el-pagination background
-                               layout="prev, pager, next"
-                               :total="diary_list.length">
-                </el-pagination> -->
-      <el-pagination
+      <!-- <el-pagination
         background
         class="cen"
         hide-on-single-page
@@ -86,7 +83,7 @@
         :total="diary_list.length"
         layout="prev, pager, next,jumper"
       >
-      </el-pagination>
+      </el-pagination> -->
       <div class="some_logo">
         <img
           src="../../assets/img/home/web.png"
@@ -156,13 +153,6 @@ export default {
         console.log(error)
       }
     },
-    // ceshi () {
-    //         /*DOM还没更新*/
-    //         this.$nextTick(function () {
-    //                 /*DOM更新了*/
-    //                 console.log('888888888')
-    //         })
-    // },
     search_diary () {
       console.log('进入');
       api.diary_search({
@@ -178,18 +168,6 @@ export default {
     },
     //初始化数据，请求默认数据
     init () {
-      const code = location.href.slice(28, 59)
-      //获取token
-      api.get('/tblm/get/access/token', {
-        // code: this.$route.query.code
-        code
-      })
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          this.$message.error(err);
-        });
     },
     //跳转到发表日记
     write_diary () {
@@ -201,7 +179,7 @@ export default {
         path: "/details",
         name: "Details",
         params: {
-          info: info,
+          info: info,//这里携带的参数页面刷新不会保留
         },
         query: {
           id: info.ID,
@@ -281,7 +259,7 @@ export default {
 }
 .diary_box {
   height: 100%;
-  border-bottom: 1px dashed #280bc1;
+  /* border-bottom: 1px dashed #280bc1; */
 }
 /* .search {
         width: 100%;

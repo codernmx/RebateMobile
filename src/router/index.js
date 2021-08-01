@@ -49,7 +49,7 @@ const routes = [
     name: 'Shop',
     component: () => import('../views/learn/Shop'),
     meta: {
-      noRefresh: true
+      // noRefresh: true
     }
   },
   {
@@ -101,7 +101,7 @@ const routes = [
     name: 'Order',
     component: () => import('../views/profile/Order'),
     meta: {
-      noRefresh: true
+      // noRefresh: true
     }
   },
   {

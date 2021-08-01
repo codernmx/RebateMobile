@@ -4,6 +4,8 @@
     <div
       class="bigBox"
       v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
     >
       <div
         v-for="(item,index) in nineGoodsList"

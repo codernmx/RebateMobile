@@ -171,9 +171,6 @@ export const getGoodsLists = function (id) {
   })
 };
 
-
-
-
 /**
  * get方法，对应get请求
  */
