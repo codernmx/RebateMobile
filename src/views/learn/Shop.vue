@@ -1,25 +1,7 @@
 
 <template>
   <div id="shop">
-    <vue-particles
-      color="#FF5777"
-      :particleOpacity="0.6"
-      :particlesNumber="100"
-      shapeType="circle"
-      :particleSize="4"
-      linesColor="#FF5777"
-      :linesWidth="1"
-      :lineLinked="true"
-      :lineOpacity="0.4"
-      :linesDistance="130"
-      :moveSpeed="2"
-      :hoverEffect="true"
-      hoverMode="grab"
-      :clickEffect="true"
-      clickMode="push"
-      class="bg"
-    >
-    </vue-particles>
+    <Snow />
     <!-- <div class="nav navTop">
       <div class="el-icon-arrow-left fz-xl"></div>
       <div class="diary">首页</div>
@@ -213,7 +195,7 @@ import Snow from "components/common/snowbg/Snow"//导入飘雪花的背景
 
 export default {
   name: "Shop",
-  components: { ClipBoard },
+  components: { ClipBoard, Snow },
   data () {
     return {
       listLoading: false,//列表加载动画

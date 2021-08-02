@@ -69,9 +69,26 @@
 
               <div class="price">
                 <p class="dollar">{{item.actualPrice}}元</p>
-                <p>优惠券金额{{item.couponPrice}}</p>
+                <p>优惠券金额<span class="dollar">{{item.couponPrice}}</span>元</p>
               </div>
-              <p>热力值<span class="hot">{{item.hotPush}}</span></p>
+              <div class="hotLine">
+                <div class="hotbox">
+                  热力值
+                  <span class="hot">{{item.hotPush}}</span>
+                  <img
+                    src="@/assets/img/nav/fire.png"
+                    height="25"
+                    alt=""
+                  >
+                </div>
+                <div class="button">
+                  <el-button
+                    round
+                    size="small"
+                    type="danger"
+                  >立即抢</el-button>
+                </div>
+              </div>
 
               <el-tag
                 v-if="item.specialText[0]"
@@ -226,8 +243,23 @@ export default {
       color: #f40;
     }
   }
-  .hot {
-    margin-left: 10px;
+  .hotLine {
+    display: flex;
+    justify-content: space-between;
+    .hotbox {
+      display: flex;
+      align-items: center;
+      img {
+        margin-left: 5px;
+      }
+      .hot {
+        margin-left: 10px;
+      }
+    }
+    .button{
+      width: 50px;
+      overflow: hidden;
+    }
   }
   .topBox {
     display: flex;

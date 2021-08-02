@@ -172,7 +172,7 @@ export default {
       } else {
         this.isShowAuthorization = false
       }
-      console.log(this.isShowAuthorization)
+      // console.log(this.isShowAuthorization)
     },
     getSession (code) {
       //通过code 获取session

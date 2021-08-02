@@ -31,6 +31,8 @@
     <div
       class="content_box"
       v-loading="loading"
+      element-loading-text="拼命加载中"
+      element-loading-spinner="el-icon-loading"
     >
       <el-input
         v-model="search"
