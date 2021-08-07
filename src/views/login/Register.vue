@@ -105,29 +105,37 @@ export default {
       // 跳转
       if (this.user && this.password && this.rePassword && this.inputVerify) {
         if (this.inputVerify == this.verify && this.password == this.rePassword) {
-          api.register(this.user, this.password)
+          api.post('tbk/register', {
+            user: this.user,
+            password: this.password
+          })
             .then((res) => {
               console.log(res);
               this.loginLoading = false
-              this.$message.success({
-                message: '注册成功,但是新注册账号没有日记信息哦',
-                center: true
-              });
+              if (res.code == 200) {
+                this.$message.success({
+                  message: '注册成功,但是新注册账号没有日记信息哦',
+                  center: true
+                });
+                setTimeout(() => {
+                  //跳转//携带当前注册的账号密码
+                  this.$router.push({
+                    path: "/login",
+                    name: "Login",
+                    params: {
+                      user: this.user,
+                      password: this.password
+                    }
+                  });
+                }, 3000)
+              }else{
+                 this.$message.error(res.msg)
+              }
             })
             .catch((err) => {
               console.log(err);
             });
-          setTimeout(() => {
-            //跳转//携带当前注册的账号密码
-            this.$router.push({
-              path: "/login",
-              name: "Login",
-              params: {
-                user: this.user,
-                password: this.password
-              }
-            });
-          }, 3000)
+
         } else {
           setTimeout(() => {
             this.$message.error({

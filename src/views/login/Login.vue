@@ -92,36 +92,6 @@ export default {
     submit () {
       this.loginLoading = true
       //获取token
-
-      // api.login(this.user, this.password)
-      //   .then((res) => {
-      //     console.log(res);
-      //     this.loginLoading = false
-      //     if (res.token) {
-      //       this.$message.success({
-      //         message: '登陆成功',
-      //         center: true
-      //       });
-      //       localStorage.token = res.token;
-      //       localStorage.user = res.user;
-      //       localStorage.channelId = res.channelId;//存储渠道ID
-      //       localStorage.id = res.id;//用户id
-      //       this.$router.push({
-      //         path: "/profile",
-      //         name: "Profile",
-      //       });
-      //     } else {
-      //       this.loginLoading = false
-      //       this.$message.error({
-      //         message: res.msg,
-      //         center: true
-      //       });
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
       api.post('/tbk/login', {
         user: this.user,
         password: this.password,

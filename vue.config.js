@@ -32,7 +32,8 @@ module.exports = {
 
       },
       '^/tbk': {
-        target: 'http://82.156.117.112:9191/',
+        target: 'http://82.156.117.112:9191/',//服务器
+        // target: 'http://127.0.0.1:9191/',//本地
         ws: true,
         changOrigin: true,
         // pathRewrite: {
