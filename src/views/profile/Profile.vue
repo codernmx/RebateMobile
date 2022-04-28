@@ -114,7 +114,7 @@ export default {
       // getSessionBackUrl: 'http://localhost:8080/#/profile',
       getSessionBackUrl: 'https://nmxgzs.cn/#/profile',
       user: null,
-      expect: null,
+      expect: 0,
     }
   },
   created () {

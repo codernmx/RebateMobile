@@ -43,10 +43,7 @@
           prefix-icon="el-icon-unlock"
           v-model="inputVerify"
         ></el-input>
-        <div
-          class="verifyNum"
-          @click="newVerify"
-        >{{verify}}</div>
+        <div class="verifyNum" @click="newVerify">{{ verify }}</div>
       </div>
       <el-button
         type="primary"
@@ -54,12 +51,10 @@
         class="submit"
         @click="submit"
         :loading="loginLoading"
-      >马上注册</el-button>
+        >马上注册</el-button
+      >
     </div>
-    <p
-      class="cen"
-      @click="toLogin"
-    >
+    <p class="cen" @click="toLogin">
       已有账号，去登陆
     </p>
   </div>
@@ -70,94 +65,64 @@ import * as api from "../../api/api";
 export default {
   name: "Login",
   components: {},
-  data () {
+  data() {
     return {
-
-      rePassword: '',//重复密码
-      inputVerify: '',//输入的验证码
-      verify: '点击获取',
+      rePassword: "", //重复密码
+      inputVerify: "", //输入的验证码
+      verify: "点击获取",
       user: "",
       password: "",
       loginLoading: false
     };
   },
-  created () {
+  created() {
     this.init();
   },
   methods: {
     //初始化数据，请求默认数据
-    init () {
+    init() {
       //读取localStorage
     },
     //生成验证码
-    newVerify () {
+    newVerify() {
       this.verify = Math.floor(Math.random() * (9999 - 1000)) + 1000;
     },
-    toLogin () {
+    toLogin() {
       this.$router.push({
         path: "/login",
-        name: "Login",
+        name: "Login"
       });
     },
-    submit () {
-      this.loginLoading = true
+    submit() {
+      this.loginLoading = true;
       //请求接口
       // 跳转
       if (this.user && this.password && this.rePassword && this.inputVerify) {
-        if (this.inputVerify == this.verify && this.password == this.rePassword) {
-          api.post('tbk/register', {
-            user: this.user,
-            password: this.password
-          })
-            .then((res) => {
-              console.log(res);
-              this.loginLoading = false
-              if (res.code == 200) {
-                this.$message.success({
-                  message: '注册成功,但是新注册账号没有日记信息哦',
-                  center: true
-                });
-                setTimeout(() => {
-                  //跳转//携带当前注册的账号密码
-                  this.$router.push({
-                    path: "/login",
-                    name: "Login",
-                    params: {
-                      user: this.user,
-                      password: this.password
-                    }
-                  });
-                }, 3000)
-              }else{
-                 this.$message.error(res.msg)
-              }
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-
+        if (
+          this.inputVerify == this.verify &&
+          this.password == this.rePassword
+        ) {
+          //do something
         } else {
           setTimeout(() => {
             this.$message.error({
-              message: '验证码不正确或者两次密码不一致',
+              message: "验证码不正确或者两次密码不一致",
               center: true
-            })
-            this.loginLoading = false
-          }, 2000)
+            });
+            this.loginLoading = false;
+          }, 2000);
         }
-      }
-      else {
+      } else {
         setTimeout(() => {
           this.$message.error({
-            message: '请输入全部信息哦',
+            message: "请输入全部信息哦",
             center: true
-          })
-          this.loginLoading = false
-        }, 2000)
-
+          });
+          this.loginLoading = false;
+        }, 2000);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

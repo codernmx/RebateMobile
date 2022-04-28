@@ -92,34 +92,39 @@ export default {
     submit () {
       this.loginLoading = true
       //获取token
-      api.post('/tbk/login', {
-        user: this.user,
-        password: this.password,
-      }).then((res) => {
-        console.log(res)
-        if (res.status == 200) {
-          this.$message.success({
-            message: '登陆成功',
-            center: true
-          });
-          console.log(res.results[0])
-          localStorage.token = res.token;//token
-          localStorage.user = res.results[0].USER;//用户
-          localStorage.channelId = res.results[0].CHANNELID;//存储渠道ID
-          localStorage.id = res.results[0].ID;//用户id
-          localStorage.account = res.results[0].ACCOUNT;//账户用来判断是否绑定账号
-          this.$router.push({
-            path: "/profile",
-            name: "Profile",
-          });
-        } else {
-          this.loginLoading = false
-          this.$message.error({
-            message: res.msg,
-            center: true
-          });
-        }
-      })
+      if (this.password && this.password) {
+        api.post('/tbk/login', {
+          user: this.user,
+          password: this.password,
+        }).then((res) => {
+          console.log(res)
+          if (res.status == 200) {
+            this.$message.success({
+              message: '登陆成功',
+              center: true
+            });
+            console.log(res.results[0])
+            localStorage.token = res.token;//token
+            localStorage.user = res.results[0].USER;//用户
+            localStorage.channelId = res.results[0].CHANNELID;//存储渠道ID
+            localStorage.id = res.results[0].ID;//用户id
+            localStorage.account = res.results[0].ACCOUNT;//账户用来判断是否绑定账号
+            this.$router.push({
+              path: "/profile",
+              name: "Profile",
+            });
+          } else {
+            this.loginLoading = false
+            this.$message.error({
+              message: res.msg,
+              center: true
+            });
+          }
+        })
+      } else {
+        this.$message.error('请填写账号或者密码')
+        this.loginLoading = false
+      }
     },
   },
 };
